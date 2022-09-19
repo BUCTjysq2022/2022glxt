@@ -3,7 +3,7 @@
 /****定义商品结构体****/
 typedef struct item
 {
-	int id;//货号
+	int id;//货号 
 	char category[10]; //类型
 	char name[30];//名称
 	int in_prize;//进价
