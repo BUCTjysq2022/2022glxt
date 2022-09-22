@@ -171,6 +171,7 @@ void establish()
 		for(i=0;i<input_num;i++)
 		{
 			item_array[i].stock_quantity+=item_array[i].purchase_quantity;
+			item_array[i].purchase_quantity=0;
 		}
 		/*输入文件*/
 		for(i=0;i<input_num;i++)
@@ -181,12 +182,13 @@ void establish()
 			fprintf(fp,"%d ",item_array[i].in_prize);
 			fprintf(fp,"%d ",item_array[i].out_prize);
 			fprintf(fp,"%d ",item_array[i].stock_quantity);
+			fprintf(fp,"%d ",item_array[i].purchase_quantity);
 			fprintf(fp,"%d %d %d ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
 			fprintf(fp,"%d %d %d ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
 			fprintf(fp,"%d %d %d\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 		}
 		
-		printf("文件写入完成!");
+		printf("文件写入完成!\n");
 		fclose(fp);
 		break;
 		
@@ -213,7 +215,7 @@ void establish()
 			fscanf(infp,"%d",&item_array[i].in_prize);
 			fscanf(infp,"%d",&item_array[i].out_prize);
 			fscanf(infp,"%d",&item_array[i].stock_quantity);
-			fprintf(fp,"%d ",item_array[i].purchase_quantity);
+			fscanf(infp,"%d",&item_array[i].purchase_quantity);
 			fscanf(infp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 			fscanf(infp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 			fscanf(infp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
@@ -226,18 +228,18 @@ void establish()
 			item_array[i].purchase_quantity=0;
 		}
 		/*成功录入数组提示*/
-		printf("成功检测到如下项目：\n");
+		printf("\n成功检测到如下商品：\n");
 		for(i=0;i<input_num;i++)
 		{
-			printf("%d ||",item_array[i].id);
-			printf("%s ",item_array[i].category);
-			printf("%s ||",item_array[i].name);
-			printf("%d ",item_array[i].in_prize);
-			printf("%d ",item_array[i].out_prize);
-			printf("%d ",item_array[i].stock_quantity);
-			printf("%d %d %d | ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-			printf("%d %d %d | ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-			printf("%d %d %d\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+			printf("货号：%d \n",item_array[i].id);
+			printf("类别：%s ",item_array[i].category);
+			printf("名称：%s \n",item_array[i].name);
+			printf("进价：%d ",item_array[i].in_prize);
+			printf("售价：%d ",item_array[i].out_prize);
+			printf("库存：%d ",item_array[i].stock_quantity);
+			printf("\n生产日期：%d年%d月%d日  ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+			printf("\n进货日期：%d年%d月%d日  ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+			printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 		}
 		if(input_num==i)
 			printf("全部商品录入完成!\n");
@@ -253,6 +255,7 @@ void establish()
 			fprintf(fp,"%d ",item_array[i].in_prize);
 			fprintf(fp,"%d ",item_array[i].out_prize);
 			fprintf(fp,"%d ",item_array[i].stock_quantity);
+			fprintf(fp,"%d ",item_array[i].purchase_quantity);
 			fprintf(fp,"%d %d %d ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
 			fprintf(fp,"%d %d %d ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
 			fprintf(fp,"%d %d %d\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
@@ -376,22 +379,22 @@ void back()
 
 void disstore()//***显示库存功能1.0,下一阶段准备进行美观,目前时间不够***//
 {
-	  /***检测数据库文件是否存在***/
+	/***检测数据库文件是否存在***/
 	FILE *fp;
 	if((fp=fopen("database.txt","a+"))==NULL)
 	{
 		printf("找不到数据库文件");
 		exit(0);
 	}
-
-
+	
+	
 	char a;
 	printf("品名 进价 卖价 库存 进货量 生产日期 进货日期 保质期\n");//***过于简单不做注释批注***//
 	while((a=fgetc(fp))!=EOF)
 	{
-        printf("%c",a);
+		printf("%c",a);
 	}
-
+	
 	return 0;
 }
 
