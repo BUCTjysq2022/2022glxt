@@ -395,7 +395,6 @@ void disstore()//***显示库存功能1.0,下一阶段准备进行美观,目前�
 		printf("%c",a);
 	}
 	
-	return 0;
 }
 
 void shop()//***购物车功能（未完成开发）
