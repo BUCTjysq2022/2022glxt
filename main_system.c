@@ -374,9 +374,25 @@ void back()
 	printf("\n数据库写入完成！");
 }
 
-void disstore()//***显示库存功能（未完成开发）
+void disstore()//***显示库存功能1.0,下一阶段准备进行美观,目前时间不够***//
 {
-	printf("\n功能待开发，谢谢支持！ （づ￣3￣）づ╭?～\n");
+	  /***检测数据库文件是否存在***/
+	FILE *fp;
+	if((fp=fopen("database.txt","a+"))==NULL)
+	{
+		printf("找不到数据库文件");
+		exit(0);
+	}
+
+
+	char a;
+	printf("品名 进价 卖价 库存 进货量 生产日期 进货日期 保质期\n");//***过于简单不做注释批注***//
+	while((a=fgetc(fp))!=EOF)
+	{
+        printf("%c",a);
+	}
+
+	return 0;
 }
 
 void shop()//***购物车功能（未完成开发）
