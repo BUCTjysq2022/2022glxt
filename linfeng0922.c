@@ -27,12 +27,13 @@ void back();//退货函数
 void disstore();//显示库存函数
 void shop();//购物车功能
 void calculate();//计算功能
-
+void search();//查找功能
 
 
 //***全局变量定义***//
 int input_method;
 int input_num;
+int input_id;
 int mode;
 int i;
 int to_be_deleted,delete_num;
@@ -41,7 +42,7 @@ struct item item_array[100];
 
 
 //***主函数整体***//
-void main()
+int main()
 {
     printf("***********************************\n");
 	printf("     欢迎进入超市管理系统\n");
@@ -66,8 +67,11 @@ void main()
 
             case 5:
             calculate();break;
-
-            case 6:
+			
+	    case 6:
+            search();break;
+			
+            case 7:
 			printf("感谢使用，再见!\n");
 			exit(0);
         }
@@ -86,15 +90,16 @@ int menu()
 	printf("3.显示所有信息\n");
 	printf("4.购物车\n");
 	printf("5.结算\n");
-    printf("6.退出程序\n");
-	printf("请选择对应数字1--6:\n");
+	printf("6.查找\n");
+    	printf("7.退出程序\n");
+	printf("请选择对应数字1--7:\n");
 
 	while (1)
 	{
 		fflush(stdin);//***清空输入缓存流***//
 		gets(str);
 		select = atoi(str);
-		if (select<1 || select>6)
+		if (select<1 || select>7)
 			printf("输入错误，请重新输入:");
 		else
 			break;
@@ -382,4 +387,57 @@ void shop()//***购物车功能（未完成开发）
 void calculate()//***计算功能（未完成开发）
 {
     printf("\n功能待开发，谢谢支持！ （づ￣3￣）づ╭?～\n");
+}
+//***查找函数定义***//
+void search()
+{
+
+    /***检测数据库文件是否存在***/
+	FILE *fp;
+	if((fp=fopen("database.txt","a+"))==NULL)
+	{
+		printf("找不到数据库文件");
+		exit(0);
+	}
+
+    /***查找***/
+		printf("请输入想要查找商品的ID：\n");
+		scanf("%s",&input_id);
+		/**数据库导入数组**/
+		for(i=0;i<500;i++)
+		{
+			fscanf(fp,"%d",&item_array[i].id);
+			fscanf(fp,"%s",&item_array[i].category);
+			fscanf(fp,"%s",&item_array[i].name);
+			fscanf(fp,"%d",&item_array[i].in_prize);
+			fscanf(fp,"%d",&item_array[i].out_prize);
+			fscanf(fp,"%d",&item_array[i].stock_quantity);
+			fscanf(fp,"%d",&item_array[i].purchase_quantity);
+			fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
+			fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
+			fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+		}
+		/**搜索商品**/
+		for(i=0;i<500;i++)
+		{	
+			if(item_array[i].id==input_id){
+				printf("库中仍有此商品，商品信息为：\n");
+				printf("%d ||",item_array[i].id);
+				printf("%s ",item_array[i].category);
+				printf("%s ||",item_array[i].name);
+				printf("%d ",item_array[i].in_prize);
+				printf("%d ",item_array[i].out_prize);
+				printf("%d ",item_array[i].stock_quantity);
+				printf("%d ||",item_array[i].purchase_quantity);
+				printf("%d %d %d | ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+				printf("%d %d %d | ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+				printf("%d %d %d\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+				break;
+			}
+			
+		}
+		if(i==input_num){
+			printf("查无此商品\n");	
+		}
+		
 }
