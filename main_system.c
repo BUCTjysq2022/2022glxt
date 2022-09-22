@@ -386,14 +386,38 @@ void disstore()//***显示库存功能1.0,下一阶段准备进行美观,目前�
 		printf("找不到数据库文件");
 		exit(0);
 	}
-	
-	
-	char a;
-	printf("品名 进价 卖价 库存 进货量 生产日期 进货日期 保质期\n");//***过于简单不做注释批注***//
-	while((a=fgetc(fp))!=EOF)
+
+    printf("请输入想要读取和编辑商品条数：\n");
+	scanf("%d",&input_num);
+
+int i;
+	for(i=0;i<input_num;i++)
 	{
-		printf("%c",a);
+		fscanf(fp,"%d",&item_array[i].id);
+		fscanf(fp,"%s",&item_array[i].category);
+		fscanf(fp,"%s",&item_array[i].name);
+		fscanf(fp,"%d",&item_array[i].in_prize);
+		fscanf(fp,"%d",&item_array[i].out_prize);
+		fscanf(fp,"%d",&item_array[i].stock_quantity);
+		fscanf(fp,"%d",&item_array[i].purchase_quantity);
+		fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
+		fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
+		fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
 	}
+
+for (i = 0; i<input_num; i++)
+	{
+		printf("货号：%d \n",item_array[i].id);
+		printf("类别：%s ",item_array[i].category);
+		printf("名称：%s \n",item_array[i].name);
+		printf("进价：%d ",item_array[i].in_prize);
+		printf("售价：%d ",item_array[i].out_prize);
+		printf("库存：%d ",item_array[i].stock_quantity);
+		printf("\n生产日期：%d年%d月%d日  ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+		printf("\n进货日期：%d年%d月%d日  ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+		printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+	}
+	fclose(fp);
 	
 }
 
