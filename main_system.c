@@ -449,9 +449,9 @@ void search()
 			printf("进价：%d \n",item_array[i].in_prize);
 			printf("售价：%d \n",item_array[i].out_prize);
 			printf("库存：%d \n",item_array[i].stock_quantity);
-			printf("生产日期：%d %d %d \n",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-			printf("进货日期：%d %d %d \n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-			printf("保质期至：%d %d %d \n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+			printf("生产日期：%d年%d月%d日\n",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+			printf("进货日期：%d年%d月%d日\n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+			printf("保质期至：%d年%d月%d日\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 			break;
 		}
 		
