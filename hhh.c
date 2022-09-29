@@ -466,6 +466,11 @@ int shop_menu()//***购物车菜单功能
 }
 
 
+void disshop(){
+	
+}
+
+
 void chanshop()//***修改购物车函数功能
 {
     /***检测数据库文件是否存在***/
@@ -592,10 +597,9 @@ void chanshop()//***修改购物车函数功能
 						{
 							j++;
 						}
-						    char mingzi[200];
+						    
 					        goods[j].code=item_array[t].id;
-		                    mingzi[200]=item_array[t].name;
-		                    strcpy(goods[j].name,mingzi[200]);
+		                    strcpy(goods[j].name,item_array[t].name);
 		                    goods[j].number=k;
 		                    goods[j].price=item_array[t].out_prize;
 					        item_array[j].stock_quantity=item_array[t].stock_quantity-k;
@@ -708,5 +712,3 @@ void search()
 		printf("查无此商品\n");	
 	}
 }
-
-
