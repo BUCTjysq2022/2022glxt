@@ -28,7 +28,9 @@ void disstore();//显示库存函数
 void shop();//购物车功能
 void calculate();//计算功能
 void search();//查找功能
-
+void disshop();//***提前声明函数
+void chanshop();//***提前声明函数
+int shop_menu();//***提前声明函数
 
 //***全局变量定义***//
 int input_method;
@@ -420,9 +422,7 @@ for (i = 0; i<input_num; i++)
 
 
 
-void disshop();//***提前声明函数
-void chanshop();//***提前声明函数
-int shop_menu();//***提前声明函数
+
 
 
 
