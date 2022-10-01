@@ -28,6 +28,11 @@ void disstore();//显示库存函数
 void shop();//购物车功能
 void calculate();//计算功能
 void search();//查找功能
+void disshop();//***提前声明函数
+void chanshop();//***提前声明函数
+int shop_menu();//***提前声明函数
+
+
 
 
 //***全局变量定义***//
@@ -77,6 +82,8 @@ int main()
 	
 }
 
+
+
 //***菜单选择函数定义***//
 int menu()
 {
@@ -105,6 +112,8 @@ int menu()
 	}
 	return select;
 }
+
+
 
 
 //***定义进货函数***//
@@ -271,6 +280,7 @@ void establish()
 
 
 
+
 //***退货函数定义***//
 void back()
 {
@@ -347,7 +357,7 @@ void back()
 		scanf("%d",&whether_continue);
 	}
 	
-	/**将数组写入新文件**/
+	//***将数组写入新文件***//
 	
 	/*新建数据库*/
 	if((new_fp=fopen("database_new.txt","w"))==NULL)
@@ -377,7 +387,11 @@ void back()
 	printf("\n数据库写入完成！");
 }
 
-void disstore()//***显示库存功能1.0,下一阶段准备进行美观,目前时间不够***//
+
+
+
+//***显示库存功能1.0,下一阶段准备进行美观,目前时间不够***//
+void disstore()
 {
 	/***检测数据库文件是否存在***/
 	FILE *fp;
@@ -418,18 +432,331 @@ for (i = 0; i<input_num; i++)
 		printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 	}
 	fclose(fp);
-	
 }
 
-void shop()//***购物车功能（未完成开发）
+
+
+
+//***购物车功能***//
+void shop()
 {
-	printf("\n功能待开发，谢谢支持！ （づ￣3￣）づ╭?～\n");
+	while(1)
+	{
+		switch(shop_menu())
+		{
+			case 1:disshop();break;//***显示购物车商品
+
+			case 2:chanshop();break;//***修改购物车商品
+
+			case 3:return;//***返回
+		}
+	}
 }
+
+
+
+
+//***购物车菜单功能***//
+int shop_menu()
+{
+    char  str[5];
+	int   select;
+	printf("\n请选择操作\n");
+	printf("-----------------------\n");
+	printf("1.显示当前购物列表\n");
+	printf("2.修改当前购物列表\n");
+	printf("3.退出\n");
+	printf("-----------------------\n\n");
+	while (1)
+	{
+		fflush(stdin);
+		gets(str);
+		select = atoi(str);
+		if (select<1 || select>3)
+			printf("输入错误，请重新输入:");
+		else
+			break;
+	}
+	return select;
+}
+
+
+
+
+//***显示购物车列表功能***//
+void disshop()
+{
+	FILE *shopfp;
+	if((shopfp=fopen("shopping.txt","a+"))==NULL)
+	{
+		printf("找不到数据库文件");
+		exit(0);
+	}
+     
+    struct Goods//***购物车结构体定义***//
+    {
+        int code;
+        char name[20];
+        double price;
+        double discount;//折扣
+        int number;//数量
+        double totalPayment;//总额
+    };
+    struct Goods goods[100];
+
+	printf("请输入想要读取和编辑商品条数：\n");
+	scanf("%d",&input_num);
+
+    int i;
+	for(i=0;i<input_num;i++)
+	{
+        fscanf(shopfp,"%d",&goods[i].code);
+		fscanf(shopfp,"%s",&goods[i].name);
+		fscanf(shopfp,"%lf",&goods[i].price);
+		fscanf(shopfp,"%lf",&goods[i].discount);
+		fscanf(shopfp,"%d",&goods[i].number);
+		fscanf(shopfp,"%lf",&goods[i].totalPayment);
+	}
+
+	for (i = 0; i<input_num; i++)
+	{
+		printf("货号是：%d \n",goods[i].code);
+		printf("货物名字是：%s \n",goods[i].name);
+		printf("价格是：%lf \n",goods[i].price);
+		printf("折扣是：%lf \n",goods[i].discount);
+		printf("数量是：%d \n",goods[i].number);
+		printf("总价是：%lf \n",goods[i].totalPayment);
+	}
+	
+	fclose(shopfp);
+
+}
+
+
+
+
+//***修改购物车函数功能***//
+void chanshop()
+{
+    /***检测数据库文件是否存在***/
+	FILE *fp;
+	if((fp=fopen("database.txt","a+"))==NULL)
+	{
+		printf("找不到数据库文件");
+		exit(0);
+	}
+
+FILE *shopfp;
+	if((shopfp=fopen("shopping.txt","a+"))==NULL)
+	{
+		printf("找不到数据库文件");
+		exit(0);
+	}
+
+
+    printf("请输入想要读取和编辑商品条数：\n");
+	scanf("%d",&input_num);
+
+    int i;
+	for(i=0;i<input_num;i++)
+	{
+		fscanf(fp,"%d",&item_array[i].id);
+		fscanf(fp,"%s",&item_array[i].category);
+		fscanf(fp,"%s",&item_array[i].name);
+		fscanf(fp,"%d",&item_array[i].in_prize);
+		fscanf(fp,"%d",&item_array[i].out_prize);
+		fscanf(fp,"%d",&item_array[i].stock_quantity);
+		fscanf(fp,"%d",&item_array[i].purchase_quantity);
+		fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
+		fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
+		fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+	}
+	fclose(fp);
+	/**展示数据库**/
+	printf("\n数据库中有如下商品：\n");
+	for(i=0;i<input_num;i++)
+	{
+		printf("货号：%d \n",item_array[i].id);
+		printf("类别：%s ",item_array[i].category);
+		printf("名称：%s \n",item_array[i].name);
+		printf("进价：%d ",item_array[i].in_prize);
+		printf("售价：%d ",item_array[i].out_prize);
+		printf("库存：%d ",item_array[i].stock_quantity);
+		printf("\n生产日期：%d年%d月%d日  ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+		printf("\n进货日期：%d年%d月%d日  ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+		printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+	}
+   
+   
+     struct Goods//***购物车结构体定义***//
+    {
+        int code;
+        char name[20];
+        double price;
+        double discount;//折扣
+        int number;//数量
+        double totalPayment;//总额
+    };
+    struct Goods goods[100];
+    int e;
+   
+   for(e=0;e<100;e++)
+   {
+   	    goods[e].code=0;
+   }
+
+    printf("请选择添加商品到购物车，或者从购物车中删除商品\n");
+	printf("1.添加商品\n");
+	printf("2.删除商品\n");
+	scanf("%d",&input_method);
+	switch(input_method)
+	{
+		
+		case 1:
+	{
+		
+		    //***添加商品***//
+			char choicex[200];
+		do
+		{
+		    printf("请输入想要读取和编辑商品条数：\n");
+	        scanf("%d",&input_num);
+		    printf("请输入想要查找商品的货号：\n");
+	        scanf("%d",&input_id);
+
+			/**搜索商品**/
+			int t;
+	        for(i=0;i<input_num;i++)
+	        {	
+		        if(item_array[i].id==input_id)
+				{
+					t=i;
+			        printf("库中仍有此商品，商品信息为：\n");
+			        printf("货号：%d \n",item_array[i].id);
+			        printf("类别：%s \n",item_array[i].category);
+			        printf("名称：%s \n",item_array[i].name);
+			        printf("进价：%d \n",item_array[i].in_prize);
+			        printf("售价：%d \n",item_array[i].out_prize);
+			        printf("库存：%d \n",item_array[i].stock_quantity);
+			        printf("生产日期：%d年%d月%d日\n",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
+			        printf("进货日期：%d年%d月%d日\n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
+			        printf("保质期至：%d年%d月%d日\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+			        break;
+		        }
+				
+				else
+				{
+                    printf("查无此商品\n");
+				}
+		
+	        }
+			char choicey[200];
+			printf("\n是否将此商品加入购物车？(是Y/否N）");
+			fflush(stdin);
+				choicey[200] = getchar();//***开始往购物车添加商品***//
+				if (choicey[200] == 'Y' || choicey[200] == 'y')
+				{
+                    printf("请输入想要添加商品的数量:\n");
+					int k;
+					scanf("%d",&k);
+					if(k>item_array[t].stock_quantity)
+					{
+						printf("库存不足\n");
+						break;
+					}
+					else//***将商品信息添加至goods结构体数组中
+					{
+						int j=0;
+						while(goods[j].code!=0)//此处如果不等于0，则说明结构体数组的这一项已经有商品了，所以跳到下一个
+						{
+							j++;
+						}
+						    
+					        goods[j].code=item_array[t].id;
+		                    strcpy(goods[j].name,item_array[t].name);
+		                    goods[j].number=k;
+		                    goods[j].price=item_array[t].out_prize;
+					        item_array[j].stock_quantity=item_array[t].stock_quantity-k;
+							goods[j].totalPayment = k*item_array[t].out_prize;
+							printf("添加商品至购物车成功！");
+					}
+					break;
+				}
+				printf("是否继续购物?(是Y/否N)\n");
+		        fflush(stdin);
+		        choicex[200] = getchar();
+		}while (choicex[200] == 'Y' || choicex[200] == 'y');//***do-while函数判断***//
+		
+		break;
+	}
+
+
+		case 2:
+	{
+		
+		//***删除商品***//
+		char choicew[200];
+		do
+		{
+            printf("请输入想要删除的商品货号\n");
+			int deleid;
+			scanf("%d",&deleid);
+			int i;
+			for(i=0;i<100;i++)
+			{
+				if(deleid==goods[i].code)
+				{
+					printf("此商品在购物车中有，数量是%d",goods[i].number);
+					printf("请问是否删除?(是Y/否N)\n");
+					char choicez[200];
+					choicez[200] = getchar();
+					if (choicez[200] == 'Y' || choicez[200] == 'y')
+					{
+                        printf("请输入删除数量\n");
+						int delenum;
+						scanf("%d",&delenum);
+						goods[i].number=goods[i].number-delenum;
+						break;
+					}
+				}
+			}
+		}while(choicew[200] == 'Y' || choicew[200] == 'y');//***do-while函数判断***//
+		break;
+	}
+
+    }
+
+	
+    int hhh;
+     printf("请输入想要读取和编辑商品条数(输入1)：\n");
+	 scanf("%d",&input_num);
+	 for(hhh=0;i<input_num;i++)
+	 {
+		fprintf(shopfp,"%d ",goods[i].code);
+		fprintf(shopfp,"%s ",goods[i].name);
+		fprintf(shopfp,"%f ",goods[i].price);
+		fprintf(shopfp,"%f ",goods[i].discount);
+		fprintf(shopfp,"%d ",goods[i].number);
+		fprintf(shopfp,"%f ",goods[i].totalPayment);
+	 }
+    
+	/*输入成功提示*/
+		printf("文件写入完成!");
+		
+		fclose(shopfp);
+}
+
+
+
 
 void calculate()//***计算功能（未完成开发）
 {
-	printf("\n功能待开发，谢谢支持！ （づ￣3￣）づ╭?～\n");
+	printf("\n功能待开发，谢谢支持！ （づ￣3￣）づ╭～\n");
 }
+
+
+
+
 //***查找函数定义***//
 void search()
 {
@@ -479,8 +806,8 @@ void search()
 		}
 		
 	}
-	if(i==input_num){
+	if(i==input_num)
+	{
 		printf("查无此商品\n");	
 	}
-	
 }
