@@ -3,7 +3,7 @@
 #include<string.h>
 #define NUM 5
 
-//***¶¨Òå½á¹¹Ìå£¬ÓÃÓÚ±íÊ¾ÉÌÆ·***//
+//***å®šä¹‰ç»“æ„ä½“ï¼Œç”¨äºè¡¨ç¤ºå•†å“***//
 struct item
 {
 	char brand[20];
@@ -12,7 +12,7 @@ struct item
 	float out_price;
 	int   storage;
 };
-//***¶¨ÒåÖ¸Õë´«²Î***//
+//***å®šä¹‰æŒ‡é’ˆä¼ å‚***//
 struct item_node{
 	struct item wanted;
 	int    amount;
@@ -31,11 +31,11 @@ void calculate();
 struct item goods[NUM];
 struct item_node *cart;
 
-//***Ö÷º¯ÊıÕûÌå***//
+//***ä¸»å‡½æ•°æ•´ä½“***//
 void main()
 {
 	printf("***********************************\n");
-	printf("     »¶Ó­½øÈë³¬ÊĞ¹ÜÀíÏµÍ³\n");
+	printf("     æ¬¢è¿è¿›å…¥è¶…å¸‚ç®¡ç†ç³»ç»Ÿ\n");
 	printf("***********************************\n");
 	while (1)
 	{
@@ -50,32 +50,32 @@ void main()
 		case 4:
 			calculate(); break;
 		case 5:
-			printf("¸ĞĞ»Ê¹ÓÃ£¬ÔÙ¼û!\n");
+			printf("æ„Ÿè°¢ä½¿ç”¨ï¼Œå†è§!\n");
 			exit(0);
 		}
 	}
 }
 
-//***²Ëµ¥¹¦ÄÜ£º1½¨Á¢¿â´æ£¬2ÏÔÊ¾ÉÌÆ·ĞÅÏ¢£¬3¹ºÎï³µ£¬4½áËã×Ü¼Û£¬5½áÊø²Ëµ¥***//
+//***èœå•åŠŸèƒ½ï¼š1å»ºç«‹åº“å­˜ï¼Œ2æ˜¾ç¤ºå•†å“ä¿¡æ¯ï¼Œ3è´­ç‰©è½¦ï¼Œ4ç»“ç®—æ€»ä»·ï¼Œ5ç»“æŸèœå•***//
 
 int menu()
 {
 	char str[5];
 	int  select;
-	printf("\n\nÇëÑ¡ÔñÊı×Ö½øĞĞ²Ù×÷\n");
-	printf("1.½¨Á¢¿â´æĞÅÏ¢\n");
-	printf("2.ÏÔÊ¾ËùÓĞĞÅÏ¢\n");
-	printf("3.¹ºÎï³µ\n");
-	printf("4.½áËã\n");
-	printf("5.ÍË³ö\n");
-	printf("ÇëÑ¡Ôñ¶ÔÓ¦Êı×Ö1--5:\n");
+	printf("\n\nè¯·é€‰æ‹©æ•°å­—è¿›è¡Œæ“ä½œ\n");
+	printf("1.å»ºç«‹åº“å­˜ä¿¡æ¯\n");
+	printf("2.æ˜¾ç¤ºæ‰€æœ‰ä¿¡æ¯\n");
+	printf("3.è´­ç‰©è½¦\n");
+	printf("4.ç»“ç®—\n");
+	printf("5.é€€å‡º\n");
+	printf("è¯·é€‰æ‹©å¯¹åº”æ•°å­—1--5:\n");
 	while (1)
 	{
 		fflush(stdin);
 		gets(str);
 		select = atoi(str);
 		if (select<1 || select>5)
-			printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë:");
+			printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:");
 		else
 			break;
 
@@ -84,7 +84,7 @@ int menu()
 
 }
 
-//***ÏÔÊ¾ËùÓĞÉÌÆ·ĞÅÏ¢***//
+//***æ˜¾ç¤ºæ‰€æœ‰å•†å“ä¿¡æ¯***//
 
 void dis_all()
 {
@@ -94,14 +94,14 @@ void dis_all()
 	for (i = 0; (fread(goods + i, sizeof(struct item), 1, fp)) != 0; i++)
 	{
 		printf("---------------------------------\n");
-		printf("»õÆ· Æ·Ãû  µ¥¼Û       ¿â´æÁ¿\n");
+		printf("è´§å“ å“å  å•ä»·       åº“å­˜é‡\n");
 		printf("%s%7s%7.2f%8d\n", goods[i].id, goods[i].brand, goods[i].out_price, goods[i].storage);
 
 	}
 	fclose(fp);
 }
 
-//***¹ºÎï³µ¹¦ÄÜÊµÏÖ***//
+//***è´­ç‰©è½¦åŠŸèƒ½å®ç°***//
 
 void shop_cart()
 {
@@ -125,11 +125,11 @@ int  cart_menu()
 {
 	char  str[5];
 	int   select;
-	printf("\nÇëÑ¡Ôñ²Ù×÷\n");
+	printf("\nè¯·é€‰æ‹©æ“ä½œ\n");
 	printf("-----------------------\n");
-	printf("1.ÏÔÊ¾µ±Ç°¹ºÎïÁĞ±í\n");
-	printf("2.Ìí¼ÓÉÌÆ·\n");
-	printf("3.ÍË³ö\n");
+	printf("1.æ˜¾ç¤ºå½“å‰è´­ç‰©åˆ—è¡¨\n");
+	printf("2.æ·»åŠ å•†å“\n");
+	printf("3.é€€å‡º\n");
 	printf("-----------------------\n\n");
 	while (1)
 	{
@@ -137,7 +137,7 @@ int  cart_menu()
 		gets(str);
 		select = atoi(str);
 		if (select<1 || select>3)
-			printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë:");
+			printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:");
 		else
 			break;
 	}
@@ -148,12 +148,12 @@ void display()
 {
 	struct item_node *p = cart;
 	if (p == NULL){
-		printf("¹ºÎï³µÎª¿Õ\n");
+		printf("è´­ç‰©è½¦ä¸ºç©º\n");
 		return;
 	}
 	while (p != NULL){
 		printf("----------------------------------\n");
-		printf("»õºÅ                Æ·Ãû  µ¥¼Û   ÊıÁ¿\n");
+		printf("è´§å·                å“å  å•ä»·   æ•°é‡\n");
 		printf("%10s%20s%7.2f%8d\n", p->wanted.id, p->wanted.brand, p->wanted.out_price, p->amount);
 		p = p->next;
 	}
@@ -168,32 +168,32 @@ void add()
 	struct item_node *p, *p1;
 	do
 	{
-		printf("ÊäÈëËùĞèÎïÆ·µÄÃû³Æ»ò»õºÅ: ");
+		printf("è¾“å…¥æ‰€éœ€ç‰©å“çš„åç§°æˆ–è´§å·: ");
 		fflush(stdin);
 		gets(str);
 		if ((fp = fopen("goods", "r")) == NULL){
-			printf("´ò¿ªÎÄ¼şÊ§°Ü\n");
+			printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥\n");
 			continue;
 		}
 		for (i = 0; fread(goods + i, sizeof(struct item), 1, fp) != 0; i++){
 			if ((strcmp(goods[i].brand, str) == 0 || strcmp(goods[i].id, str) == 0) && goods[i].storage != 0){
-				printf("ÒÑ¾­ÕÒµ½ËùĞèÎïÆ·:  \n");
+				printf("å·²ç»æ‰¾åˆ°æ‰€éœ€ç‰©å“:  \n");
 				printf("---------------------\n");
-				printf("»õºÅ  Æ·Ãû  µ¥¼Û  ¿â´æÁ¿\n");
+				printf("è´§å·  å“å  å•ä»·  åº“å­˜é‡\n");
 				printf("%s%6s%3.2f%4d\n", goods[i].id, goods[i].brand, goods[i].out_price, goods[i].storage);
-				printf("ÇëÊäÈëËùĞèÊıÁ¿: ");
+				printf("è¯·è¾“å…¥æ‰€éœ€æ•°é‡: ");
 				scanf("%d", &n);
 				if (n>goods[i].storage){
-					printf("¿â´æ²»×ã\n");
+					printf("åº“å­˜ä¸è¶³\n");
 					break;
 				}
-				printf("\nÊÇ·ñ¹ºÂò?(Y/N)");
+				printf("\næ˜¯å¦è´­ä¹°?(Y/N)");
 				fflush(stdin);
 				choice1 = getchar();
 				if (choice1 == 'Y' || choice1 == 'y'){
 					p1 = (struct item_node*)malloc(sizeof(struct item_node));
 					if (p1 == NULL){
-						printf("ÄÚ´æÉêÇëÊ§°Ü!\n");
+						printf("å†…å­˜ç”³è¯·å¤±è´¥!\n");
 						exit(1);
 					}
 					p1->amount = n;
@@ -213,9 +213,9 @@ void add()
 			}
 		}
 		if (i == NUM)
-			printf("Î´ÕÒµ½ËùĞèÎïÆ·\n");
+			printf("æœªæ‰¾åˆ°æ‰€éœ€ç‰©å“\n");
 		fclose(fp);
-		printf("ÊÇ·ñ¼ÌĞø¹ºÎï?(Y/N)");
+		printf("æ˜¯å¦ç»§ç»­è´­ç‰©?(Y/N)");
 		fflush(stdin);
 		choice2 = getchar();
 	} while (choice2 == 'Y' || choice2 == 'y');
@@ -225,29 +225,29 @@ void add()
 void  establish(){
 	FILE *fp;
 	int   i;
-	printf("ÇëÒÀ´ÎÊäÈë»õÎïĞÅÏ¢:\n");
+	printf("è¯·ä¾æ¬¡è¾“å…¥è´§ç‰©ä¿¡æ¯:\n");
 	printf("----------------------------\n");
 	for (i = 0; i<NUM; i++)
 	{
-		printf("Æ·Ãû: ");
+		printf("å“å: ");
 		fflush(stdin);
 		gets(goods[i].brand);
-		printf("»õºÅ: ");
+		printf("è´§å·: ");
 		fflush(stdin);
 		gets(goods[i].id);
-		printf("½ø¼Û: ");
+		printf("è¿›ä»·: ");
 		fflush(stdin);
 		scanf("%f", &goods[i].in_price);
-		printf("ÉÚ¼Û: ");
+		printf("å“¨ä»·: ");
 		fflush(stdin);
 		scanf("%f", &goods[i].out_price);
-		printf("ÊıÁ¿: ");
+		printf("æ•°é‡: ");
 		fflush(stdin);
 		scanf("%d", &goods[i].storage);
 		printf("\n");
 	}
 	if ((fp = fopen("goods", "w")) == NULL){
-		printf("´´½¨ÎÄ¼şÊ§°Ü.\n");
+		printf("åˆ›å»ºæ–‡ä»¶å¤±è´¥.\n");
 		return;
 	}
 	fwrite(goods, sizeof(struct item), NUM, fp);
@@ -260,10 +260,10 @@ void calculate()
 	struct item_node *p;
 	int   i;
 	FILE   *fp;
-	printf("ÒÔÏÂÊÇ¹ºÎïÇåµ¥:  \n");
+	printf("ä»¥ä¸‹æ˜¯è´­ç‰©æ¸…å•:  \n");
 	display();
 	if ((fp = fopen("goods", "r")) == NULL){
-		printf("´ò¿ªÎÄ¼şÊ§°Ü:  \n");
+		printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥:  \n");
 		return;
 	}
 	for (i = 0; (fread(goods + i, sizeof(struct item), 1, fp)) != 0; i++);
@@ -275,12 +275,12 @@ void calculate()
 		goods[i].storage -= p->amount;
 		p = p->next;
 	}
-	printf("×Ü¼Æ %7.2f", total);
-	printf("\nÊäÈëÊµ¸¶½ğ¶î: ");
+	printf("æ€»è®¡ %7.2f", total);
+	printf("\nè¾“å…¥å®ä»˜é‡‘é¢: ");
 	scanf("%f", &pay);
-	printf("Êµ¸¶:         %7.2f    ÕÒÁã:          %7.2f", pay, pay - total);
+	printf("å®ä»˜:         %7.2f    æ‰¾é›¶:          %7.2f", pay, pay - total);
 	if ((fp = fopen("goods", "w")) == NULL){
-		printf("´ò¿ªÎÄ¼şÊ§°Ü.\n");
+		printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥.\n");
 		return;
 	}
 	fwrite(goods, sizeof(struct item), NUM, fp);
