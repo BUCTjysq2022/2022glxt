@@ -300,14 +300,10 @@ exit(0);
 FILE *new_fp;
 
 /***退货***/
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
-
 /**数据库导入数组**/
-for(i=0;i<input_num;i++)
+  int i=0;
+while(fscanf(fp,"%d",&item_array[i].id)!=EOF)
 {
-
-fscanf(fp,"%d",&item_array[i].id);
 fscanf(fp,"%s",&item_array[i].category);
 fscanf(fp,"%s",&item_array[i].name);
 fscanf(fp,"%d",&item_array[i].in_prize);
@@ -317,22 +313,23 @@ fscanf(fp,"%d",&item_array[i].purchase_quantity);
 fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+  i++;
 }
 fclose(fp);
-
+int sum=i-1;
 /**展示数据库**/
 printf("\n数据库中有如下商品：\n");
-for(i=0;i<input_num;i++)
+for(int j=0;j<sum;j++)
 {
-printf("货号：%d \n",item_array[i].id);
-printf("类别：%s ",item_array[i].category);
-printf("名称：%s \n",item_array[i].name);
-printf("进价：%d ",item_array[i].in_prize);
-printf("售价：%d ",item_array[i].out_prize);
-printf("库存：%d ",item_array[i].stock_quantity);
-printf("\n生产日期：%d年%d月%d日 ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-printf("\n进货日期：%d年%d月%d日 ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+printf("货号：%d \n",item_array[j].id);
+printf("类别：%s ",item_array[j].category);
+printf("名称：%s \n",item_array[j].name);
+printf("进价：%d ",item_array[j].in_prize);
+printf("售价：%d ",item_array[j].out_prize);
+printf("库存：%d ",item_array[j].stock_quantity);
+printf("\n生产日期：%d年%d月%d日 ",item_array[j].manufacture_date[0],item_array[j].manufacture_date[1],item_array[j].manufacture_date[2]);
+printf("\n进货日期：%d年%d月%d日 ",item_array[j].in_date[0],item_array[j].in_date[1],item_array[j].in_date[2]);
+printf("\n保质期至：%d年%d月%d日\n\n",item_array[j].expiry_date[0],item_array[j].expiry_date[1],item_array[j].expiry_date[2]);
 }
 
 /**对数组修改**/
@@ -366,7 +363,7 @@ printf("已新建数据库文件");
 exit(0);
 }
 /*写入*/
-for(i=0;i<input_num;i++)
+for(i=0;i<sum;i++)
 {
 fprintf(new_fp,"%d ",item_array[i].id);
 fprintf(new_fp,"%s ",item_array[i].category);
@@ -401,13 +398,9 @@ printf("找不到数据库文件");
 exit(0);
 }
 
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
-
-int i;
-for(i=0;i<input_num;i++)
+int i=0;
+while(fscanf(fp,"%d",&item_array[i].id)!=EOF)
 {
-fscanf(fp,"%d",&item_array[i].id);
 fscanf(fp,"%s",&item_array[i].category);
 fscanf(fp,"%s",&item_array[i].name);
 fscanf(fp,"%d",&item_array[i].in_prize);
@@ -417,19 +410,20 @@ fscanf(fp,"%d",&item_array[i].purchase_quantity);
 fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+  i++;
 }
-
-for (i = 0; i<input_num; i++)
+int sum=i-1;
+for (int j = 0; j<sum; j++)
 {
-printf("货号：%d \n",item_array[i].id);
-printf("类别：%s ",item_array[i].category);
-printf("名称：%s \n",item_array[i].name);
-printf("进价：%d ",item_array[i].in_prize);
-printf("售价：%d ",item_array[i].out_prize);
-printf("库存：%d ",item_array[i].stock_quantity);
-printf("\n生产日期：%d年%d月%d日 ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-printf("\n进货日期：%d年%d月%d日 ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+printf("货号：%d \n",item_array[j].id);
+printf("类别：%s ",item_array[j].category);
+printf("名称：%s \n",item_array[j].name);
+printf("进价：%d ",item_array[j].in_prize);
+printf("售价：%d ",item_array[j].out_prize);
+printf("库存：%d ",item_array[j].stock_quantity);
+printf("\n生产日期：%d年%d月%d日 ",item_array[j].manufacture_date[0],item_array[j].manufacture_date[1],item_array[j].manufacture_date[2]);
+printf("\n进货日期：%d年%d月%d日 ",item_array[j].in_date[0],item_array[j].in_date[1],item_array[j].in_date[2]);
+printf("\n保质期至：%d年%d月%d日\n\n",item_array[j].expiry_date[0],item_array[j].expiry_date[1],item_array[j].expiry_date[2]);
 }
 fclose(fp);
 }
@@ -504,28 +498,25 @@ double totalPayment;//总额
 };
 struct Goods goods[100];
 
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
-
-int i;
-for(i=0;i<input_num;i++)
+int i=0;
+while(fscanf(shopfp,"%d",&goods[i].code)!=EOF)
 {
-fscanf(shopfp,"%d",&goods[i].code);
 fscanf(shopfp,"%s",&goods[i].name);
 fscanf(shopfp,"%lf",&goods[i].price);
 fscanf(shopfp,"%lf",&goods[i].discount);
 fscanf(shopfp,"%d",&goods[i].number);
 fscanf(shopfp,"%lf",&goods[i].totalPayment);
+  i++;
 }
-
-for (i = 0; i<input_num; i++)
+int sum=i-1;
+for (int j = 0; j<sum; j++)
 {
-printf("货号是：%d \n",goods[i].code);
-printf("货物名字是：%s \n",goods[i].name);
-printf("价格是：%lf \n",goods[i].price);
-printf("折扣是：%lf \n",goods[i].discount);
-printf("数量是：%d \n",goods[i].number);
-printf("总价是：%lf \n",goods[i].totalPayment);
+printf("货号是：%d \n",goods[j].code);
+printf("货物名字是：%s \n",goods[j].name);
+printf("价格是：%lf \n",goods[j].price);
+printf("折扣是：%lf \n",goods[j].discount);
+printf("数量是：%d \n",goods[j].number);
+printf("总价是：%lf \n",goods[j].totalPayment);
 }
 
 fclose(shopfp);
@@ -554,13 +545,11 @@ exit(0);
 }
 
 
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
 
-int i;
-for(i=0;i<input_num;i++)
+
+int i=0;
+while(fscanf(fp,"%d",&item_array[i].id)!=EOF)
 {
-fscanf(fp,"%d",&item_array[i].id);
 fscanf(fp,"%s",&item_array[i].category);
 fscanf(fp,"%s",&item_array[i].name);
 fscanf(fp,"%d",&item_array[i].in_prize);
@@ -570,21 +559,23 @@ fscanf(fp,"%d",&item_array[i].purchase_quantity);
 fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+  i++;
 }
 fclose(fp);
 /**展示数据库**/
+  int sum=i-1;
 printf("\n数据库中有如下商品：\n");
-for(i=0;i<input_num;i++)
+for(int j=0;j<sum;j++)
 {
-printf("货号：%d \n",item_array[i].id);
-printf("类别：%s ",item_array[i].category);
-printf("名称：%s \n",item_array[i].name);
-printf("进价：%d ",item_array[i].in_prize);
-printf("售价：%d ",item_array[i].out_prize);
-printf("库存：%d ",item_array[i].stock_quantity);
-printf("\n生产日期：%d年%d月%d日 ",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-printf("\n进货日期：%d年%d月%d日 ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+printf("货号：%d \n",item_array[j].id);
+printf("类别：%s ",item_array[j].category);
+printf("名称：%s \n",item_array[j].name);
+printf("进价：%d ",item_array[j].in_prize);
+printf("售价：%d ",item_array[j].out_prize);
+printf("库存：%d ",item_array[j].stock_quantity);
+printf("\n生产日期：%d年%d月%d日 ",item_array[j].manufacture_date[0],item_array[j].manufacture_date[1],item_array[j].manufacture_date[2]);
+printf("\n进货日期：%d年%d月%d日 ",item_array[j].in_date[0],item_array[j].in_date[1],item_array[j].in_date[2]);
+printf("\n保质期至：%d年%d月%d日\n\n",item_array[j].expiry_date[0],item_array[j].expiry_date[1],item_array[j].expiry_date[2]);
 }
 
 
@@ -908,7 +899,7 @@ fscanf(fp,"%d",&item_array[i].purchase_quantity);
 fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
-  i++
+  i++; 
 }
 /**搜索商品**/
   i=i-1;
