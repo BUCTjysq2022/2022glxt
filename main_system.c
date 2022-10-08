@@ -610,14 +610,13 @@ case 1:
 char choicex[200];
 do
 {
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
+
 printf("请输入想要查找商品的货号：\n");
 scanf("%d",&input_id);
 
 /**搜索商品**/
 int t;
-for(i=0;i<input_num;i++)
+for(i=0;i<sum;i++)
 {
 if(item_array[i].id==input_id)
 {
@@ -693,7 +692,7 @@ printf("请输入想要删除的商品货号\n");
 int deleid;
 scanf("%d",&deleid);
 int i;
-for(i=0;i<100;i++)
+for(i=0;i<sum;i++)
 {
 if(deleid==goods[i].code)
 {
