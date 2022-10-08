@@ -819,7 +819,7 @@ fscanf(shoppfp,"%lf",&goods[i].totalPayment);
 }
 int sum=i-1;
 double TotalPayment;
-for(j=0;j<sum;j++)
+for(int j=0;j<sum;j++)
 {
 TotalPayment=TotalPayment+goods[j].totalPayment;//***计算购物车内商品总价
 }
