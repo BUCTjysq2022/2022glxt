@@ -893,14 +893,12 @@ exit(0);
 }
 
 /***查找***/
-printf("请输入想要读取和编辑商品条数：\n");
-scanf("%d",&input_num);
 printf("请输入想要查找商品的货号：\n");
 scanf("%d",&input_id);
 /**数据库导入数组**/
-for(i=0;i<input_num;i++)
+  int i=0;
+while(fscanf(fp,"%d",&item_array[i].id)!=EOF)
 {
-fscanf(fp,"%d",&item_array[i].id);
 fscanf(fp,"%s",&item_array[i].category);
 fscanf(fp,"%s",&item_array[i].name);
 fscanf(fp,"%d",&item_array[i].in_prize);
@@ -910,26 +908,29 @@ fscanf(fp,"%d",&item_array[i].purchase_quantity);
 fscanf(fp,"%d %d %d",&item_array[i].manufacture_date[0],&item_array[i].manufacture_date[1],&item_array[i].manufacture_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].in_date[0],&item_array[i].in_date[1],&item_array[i].in_date[2]);
 fscanf(fp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
+  i++
 }
 /**搜索商品**/
-for(i=0;i<input_num;i++)
+  i=i-1;
+  int j;
+for(j=i;j>=0;j--)
 {
-if(item_array[i].id==input_id){
+if(item_array[j].id==input_id){
 printf("库中仍有此商品，商品信息为：\n");
-printf("货号：%d \n",item_array[i].id);
-printf("类别：%s \n",item_array[i].category);
-printf("名称：%s \n",item_array[i].name);
-printf("进价：%d \n",item_array[i].in_prize);
-printf("售价：%d \n",item_array[i].out_prize);
-printf("库存：%d \n",item_array[i].stock_quantity);
-printf("生产日期：%d年%d月%d日\n",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
-printf("进货日期：%d年%d月%d日\n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
-printf("保质期至：%d年%d月%d日\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
+printf("货号：%d \n",item_array[j].id);
+printf("类别：%s \n",item_array[j].category);
+printf("名称：%s \n",item_array[j].name);
+printf("进价：%d \n",item_array[j].in_prize);
+printf("售价：%d \n",item_array[j].out_prize);
+printf("库存：%d \n",item_array[j].stock_quantity);
+printf("生产日期：%d年%d月%d日\n",item_array[j].manufacture_date[0],item_array[j].manufacture_date[1],item_array[j].manufacture_date[2]);
+printf("进货日期：%d年%d月%d日\n",item_array[j].in_date[0],item_array[j].in_date[1],item_array[j].in_date[2]);
+printf("保质期至：%d年%d月%d日\n",item_array[j].expiry_date[0],item_array[j].expiry_date[1],item_array[j].expiry_date[2]);
 break;
 }
 
 }
-if(i==input_num)
+if(j<0)
 {
 printf("查无此商品\n");
 }
