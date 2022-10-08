@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <time.h>
 //****定义商品结构体****//
 struct item
 {
@@ -249,14 +249,14 @@ void establish()
         sum=i;
         fclose(infp);
 
-        for (i = 0; i < sum-1; i++)
+        for (i = 0; i < sum; i++)
         {
             item_array[i].stock_quantity += item_array[i].purchase_quantity;
             item_array[i].purchase_quantity = 0;
         }
         /*成功录入数组提示*/
         printf("\n成功检测到如下%d件商品:\n",sum);
-        for (i = 0; i < sum-1; i++)
+        for (i = 0; i < sum; i++)
         {
             printf("货号：%d \n", item_array[i].id);
             printf("类别：%s ", item_array[i].category);
@@ -273,7 +273,7 @@ void establish()
 
         /*输入数据库*/
         fprintf(fp, "\n");
-        for (i = 0; i < sum-1; i++)
+        for (i = 0; i < sum; i++)
         {
             fprintf(fp, "%d ", item_array[i].id);
             fprintf(fp, "%s ", item_array[i].category);
@@ -389,7 +389,7 @@ void back()
         exit(0);
     }
     /*写入新database*/
-    for (i = 0; i < sum-1; i++)
+    for (i = 0; i < sum; i++)
     {
         fprintf(new_fp, "%d ", item_array[i].id);
         fprintf(new_fp, "%s ", item_array[i].category);
@@ -440,7 +440,7 @@ void disstore()
         i++;
     }
     sum=i;
-    for (int j=0; j < sum-1; j++)
+    for (int j=0; j < sum; j++)
     {
         printf("货号：%d \n", item_array[j].id);
         printf("类别：%s ", item_array[j].category);
@@ -653,7 +653,7 @@ void chanshop()
 
       /**搜索商品**/
       int t;
-      for (i = 0; i < sum-1; i++)
+      for (i = 0; i < sum; i++)
       {
         if (item_array[i].id == input_id)
         {
@@ -731,7 +731,7 @@ void chanshop()
       int deleid;
       scanf("%d", &deleid);
       int i;
-      for (i = 0; i < sum-1; i++)
+      for (i = 0; i < sum; i++)
       {
         if (deleid == goods[i].code)
         {
