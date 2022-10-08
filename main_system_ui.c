@@ -820,8 +820,9 @@ int calculate_all()
 
   /***进行随机立减功能***/
   /***随机数的取值***/
+  srand(time(0));//***srand()用来设置rand()产生随机数时的随机数种子。参数seed必须是个整数，通常可以利用geypid()或time(0)的返回值来当做seed
   double newPayment;
-  newPayment = TotalPayment - (rand() % 10 + 1) * 0.01 * TotalPayment;
+  newPayment = TotalPayment - (rand() % 10) * 0.01 * TotalPayment;
   printf("\n\n\n\t由于本店有随机立减的优惠，则最后的总价为：%0.2f\n", newPayment);
   printf("\n\n\n\t谢谢惠顾，欢迎下次购物！");
 
