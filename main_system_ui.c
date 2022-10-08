@@ -513,14 +513,18 @@ void disshop()
     i++;
   }
   sum=i;
-  for (int j = 0; j < sum-1; j++)
+  if(i=0)
+  {
+	  printf("购物车中没有商品！\n");
+  }
+  for (int j = 0; j < sum; j++)
   {
     printf("货号是：%d \n", goods[j].code);
     printf("货物名字是：%s \n", goods[j].name);
     printf("价格是：%lf \n", goods[j].price);
     printf("折扣是：%lf \n", goods[j].discount);
     printf("数量是：%d \n", goods[j].number);
-    printf("总价是：%lf \n", goods[j].totalPayment);
+    printf("总价是：%lf \n\n", goods[j].totalPayment);
   }
 
   fclose(shopfp);
