@@ -31,6 +31,7 @@ void search();//查找功能
 void disshop();//***提前声明函数
 void chanshop();//***提前声明函数
 int shop_menu();//***提前声明函数
+void Profit(double TotalPayment);//***提前声明函数
 
 
 
@@ -632,14 +633,7 @@ printf("生产日期：%d年%d月%d日\n",item_array[i].manufacture_date[0],item
 printf("进货日期：%d年%d月%d日\n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
 printf("保质期至：%d年%d月%d日\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 break;
-}
 
-else
-{
-printf("查无此商品\n");
-}
-
-}
 char choicey[200];
 printf("\n是否将此商品加入购物车？(是Y/否N）");
 fflush(stdin);
@@ -672,6 +666,18 @@ printf("添加商品至购物车成功！");
 }
 break;
 }
+
+
+}
+
+else
+{
+printf("查无此商品\n");
+break;
+}
+
+}
+
 printf("是否继续购物?(是Y/否N)\n");
 fflush(stdin);
 choicex[200] = getchar();
@@ -716,19 +722,12 @@ break;
 
 }
 
-
-int hhh;
-printf("请输入想要读取和编辑商品条数(输入1)：\n");
-scanf("%d",&input_num);
-for(hhh=0;i<input_num;i++)
-{
 fprintf(shopfp,"%d ",goods[i].code);
 fprintf(shopfp,"%s ",goods[i].name);
 fprintf(shopfp,"%f ",goods[i].price);
 fprintf(shopfp,"%f ",goods[i].discount);
 fprintf(shopfp,"%d ",goods[i].number);
 fprintf(shopfp,"%f ",goods[i].totalPayment);
-}
 
 /*输入成功提示*/
 printf("文件写入完成!");
@@ -828,7 +827,7 @@ printf("\n商品总价：%f",TotalPayment);
 
 fclose(shoppfp);
 
-int Profit(double TotalPayment);
+void Profit(double TotalPayment);
 Profit(TotalPayment);//***记录本次购物的交易额
 
 /***进行随机立减功能***/
