@@ -18,6 +18,9 @@ struct item
     int expiry_date[3];      //保质期
 };
 
+
+
+
 //***自定义函数定义***//
 void establish(); //进货功能
 int menu();       //主菜单功能
@@ -30,6 +33,9 @@ void disshop();   //***提前声明函数
 void chanshop();  //***提前声明函数
 int shop_menu();  //***提前声明函数
 
+
+
+
 //***全局变量定义***//
 int input_method;
 int input_num;
@@ -39,7 +45,10 @@ int i,sum;//sum记录文件中有几行，用i进行遍历
 struct item item_array[100];
 int GoBack;
 
-//***主函数整体***//
+
+
+
+//***1***主函数整体***//
 int main()
 {   
     while (1)
@@ -88,7 +97,10 @@ int main()
     }
 }
 
-//***菜单选择函数定义***//
+
+
+
+//***2***菜单选择函数定义***//
 int menu()
 {
     int select;
@@ -114,7 +126,11 @@ int menu()
     return select;
 }
 
-//***定义进货函数***//
+
+
+
+
+//***3***定义进货函数***//
 void establish()
 {
 
@@ -233,14 +249,14 @@ void establish()
         sum=i;
         fclose(infp);
 
-        for (i = 0; i < sum; i++)
+        for (i = 0; i < sum-1; i++)
         {
             item_array[i].stock_quantity += item_array[i].purchase_quantity;
             item_array[i].purchase_quantity = 0;
         }
         /*成功录入数组提示*/
         printf("\n成功检测到如下%d件商品:\n",sum);
-        for (i = 0; i < sum; i++)
+        for (i = 0; i < sum-1; i++)
         {
             printf("货号：%d \n", item_array[i].id);
             printf("类别：%s ", item_array[i].category);
@@ -257,7 +273,7 @@ void establish()
 
         /*输入数据库*/
         fprintf(fp, "\n");
-        for (i = 0; i < sum; i++)
+        for (i = 0; i < sum-1; i++)
         {
             fprintf(fp, "%d ", item_array[i].id);
             fprintf(fp, "%s ", item_array[i].category);
@@ -279,7 +295,10 @@ void establish()
     }
 }
 
-//***退货函数定义***//
+
+
+
+//***4***退货函数定义***//
 void back()
 {
     /***变量定义***/
@@ -321,7 +340,7 @@ void back()
 
     /**展示数据库**/
     printf("\n数据库中有如下商品：\n");
-    for (i = 0; i < sum; i++)
+    for (i = 0; i < sum-1; i++)
     {
         printf("货号：%d \n", item_array[i].id);
         printf("类别：%s ", item_array[i].category);
@@ -370,7 +389,7 @@ void back()
         exit(0);
     }
     /*写入新database*/
-    for (i = 0; i < sum; i++)
+    for (i = 0; i < sum-1; i++)
     {
         fprintf(new_fp, "%d ", item_array[i].id);
         fprintf(new_fp, "%s ", item_array[i].category);
@@ -391,6 +410,10 @@ void back()
     printf("\n数据库写入完成！\n");
 }
 
+
+
+
+//***5***显示库存功能***//
 void disstore()
 {
     /***检测数据库文件是否存在***/
@@ -417,7 +440,7 @@ void disstore()
         i++;
     }
     sum=i;
-    for (int j=0; j < sum; j++)
+    for (int j=0; j < sum-1; j++)
     {
         printf("货号：%d \n", item_array[j].id);
         printf("类别：%s ", item_array[j].category);
@@ -433,7 +456,11 @@ void disstore()
     printf("按任意键返回主菜单：\n");
     scanf("%d", &GoBack);   
 }
-//***购物车功能***//
+
+
+
+
+//***6***购物车功能***//
 void shop()
 {
   while (1)
@@ -459,7 +486,10 @@ void shop()
   }
 }
 
-//***购物车菜单功能***//
+
+
+
+//***7***购物车菜单功能***//
 int shop_menu()
 {
   int select;
@@ -481,7 +511,10 @@ int shop_menu()
   return select;
 }
 
-//***显示购物车列表功能***//
+
+
+
+//***8***显示购物车列表功能***//
 void disshop()
 {
   FILE *shopfp;
@@ -532,7 +565,10 @@ void disshop()
   scanf("%d",&GoBack);
 }
 
-//***修改购物车函数功能***//
+
+
+
+//***9***修改购物车函数功能***//
 void chanshop()
 {
   /***检测数据库文件是否存在***/
@@ -617,10 +653,11 @@ void chanshop()
 
       /**搜索商品**/
       int t;
-      for (i = 0; i < sum; i++)
+      for (i = 0; i < sum-1; i++)
       {
         if (item_array[i].id == input_id)
         {
+    
           system("cls");
           t = i;
           printf("\t库中有此商品，商品信息为：\n");
@@ -667,13 +704,13 @@ void chanshop()
             break;
           }
         }
-
-        else
+      }
+       
+       if(i==sum)
         {
           printf("\n\t查无此商品\n");
           break;
         }
-      }
 
       printf("\n\t是否继续购物?(是Y/否N)\n");
       fflush(stdin);
@@ -694,7 +731,7 @@ void chanshop()
       int deleid;
       scanf("%d", &deleid);
       int i;
-      for (i = 0; i < sum; i++)
+      for (i = 0; i < sum-1; i++)
       {
         if (deleid == goods[i].code)
         {
@@ -730,7 +767,9 @@ void chanshop()
   fclose(shopfp);
 }
 
-//***计算功能***//
+
+
+//***10***计算功能***//
 void calculate()
 {
   int calculate_menu(), calculate_all();
@@ -748,7 +787,10 @@ void calculate()
   }
 }
 
-//***计算购物车内的商品总价的菜单**//
+
+
+
+//***11***计算购物车内的商品总价的菜单**//
 int calculate_menu()
 {
   char import[5];
@@ -772,7 +814,10 @@ int calculate_menu()
   return select;
 }
 
-//***计算购物车内的商品总价***//
+
+
+
+//***12***计算购物车内的商品总价***//
 int calculate_all()
 {
   struct Goods //***购物车结构体定义***//
@@ -820,11 +865,15 @@ int calculate_all()
 
   /***进行随机立减功能***/
   /***随机数的取值***/
+
+
   srand(time(0));//***srand()用来设置rand()产生随机数时的随机数种子。参数seed必须是个整数，通常可以利用geypid()或time(0)的返回值来当做seed
   double newPayment;
-  newPayment = TotalPayment - (rand() % 10) * 0.01 * TotalPayment;
+  newPayment = TotalPayment - (rand() % 10 + 1) * 0.01 * TotalPayment;
   printf("\n\n\n\t由于本店有随机立减的优惠，则最后的总价为：%0.2f\n", newPayment);
   printf("\n\n\n\t谢谢惠顾，欢迎下次购物！");
+
+
 
   /***清空购物车文件中的内容***/
   pff = fopen("shopping.txt", "w");
@@ -838,7 +887,10 @@ int calculate_all()
   system("cls");
 }
 
-//***记录每次购物的交易额***/
+
+
+
+//***13***记录每次购物的交易额***/
 void Profit(double TotalPayment)
 {
   /***检测交易额文件是否存在***/
@@ -848,7 +900,7 @@ void Profit(double TotalPayment)
     printf("\n找不到交易额文件");
     exit(0);
   }
-  fscanf(profitfp, "%lf", &TotalPayment);
+  fprintf(profitfp, "%lf", &TotalPayment);
 
   /*输入成功提示*/
   printf("\n\t\t(已录入交易额）");
@@ -856,7 +908,10 @@ void Profit(double TotalPayment)
   fclose(profitfp);
 }
 
-//***查找函数定义***//
+
+
+
+//***14***查找函数定义***//
 void search()
 {
 
