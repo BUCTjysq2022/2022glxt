@@ -805,24 +805,23 @@ printf("找不到购物车文件\n");
 exit(0);
 }
 
-printf("请输入要读取的购物车内物品数量：\n");
-scanf("%d",&input_num);
 
-int i;
-for(i=0;i<input_num;i++)
+
+int i=0;
+while(fscanf(shoppfp,"%d",&goods[i].code)!=EOF)
 {
-fscanf(shoppfp,"%d",&goods[i].code);
 fscanf(shoppfp,"%s",&goods[i].name);
 fscanf(shoppfp,"%lf",&goods[i].price);
 fscanf(shoppfp,"%lf",&goods[i].discount);
 fscanf(shoppfp,"%d",&goods[i].number);
 fscanf(shoppfp,"%lf",&goods[i].totalPayment);
+  i++;
 }
-
+int sum=i-1;
 double TotalPayment;
-for(i=0;i<input_num;i++)
+for(j=0;j<sum;j++)
 {
-TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价
+TotalPayment=TotalPayment+goods[j].totalPayment;//***计算购物车内商品总价
 }
 printf("\n商品总价：%f",TotalPayment);
 
