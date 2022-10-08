@@ -176,6 +176,8 @@ printf("保质期至：\n");
 scanf("%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[1],&item_array[i].expiry_date[2]);
 printf("\n第%d件商品录入完成！\n\n",i+1);
 }
+
+
 if(input_num==i)
 printf("全部商品录入完成!\n");
 for(i=0;i<input_num;i++)
@@ -183,6 +185,9 @@ for(i=0;i<input_num;i++)
 item_array[i].stock_quantity+=item_array[i].purchase_quantity;
 item_array[i].purchase_quantity=0;
 }
+
+
+
 /*输入文件*/
 for(i=0;i<input_num;i++)
 {
@@ -197,6 +202,7 @@ fprintf(fp,"%d %d %d ",item_array[i].manufacture_date[0],item_array[i].manufactu
 fprintf(fp,"%d %d %d ",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
 fprintf(fp,"%d %d %d\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
 }
+
 
 printf("文件写入完成!\n");
 fclose(fp);
@@ -232,6 +238,8 @@ fscanf(infp,"%d %d %d",&item_array[i].expiry_date[0],&item_array[i].expiry_date[
 }
 fclose(infp);
 
+
+
 for(i=0;i<input_num;i++)
 {
 item_array[i].stock_quantity+=item_array[i].purchase_quantity;
@@ -253,6 +261,7 @@ printf("\n保质期至：%d年%d月%d日\n\n",item_array[i].expiry_date[0],item_
 }
 if(input_num==i)
 printf("全部商品录入完成!\n");
+
 
 
 /*输入数据库*/
@@ -509,15 +518,21 @@ fscanf(shopfp,"%d",&goods[i].number);
 fscanf(shopfp,"%lf",&goods[i].totalPayment);
   i++;
 }
+
+if(i=1)
+{
+  printf("购物车中没有商品！\n");
+}
 int sum=i-1;
 for (int j = 0; j<sum; j++)
-{
+{ 
 printf("货号是：%d \n",goods[j].code);
 printf("货物名字是：%s \n",goods[j].name);
 printf("价格是：%lf \n",goods[j].price);
 printf("折扣是：%lf \n",goods[j].discount);
 printf("数量是：%d \n",goods[j].number);
 printf("总价是：%lf \n",goods[j].totalPayment);
+
 }
 
 fclose(shopfp);
@@ -728,7 +743,7 @@ fprintf(shopfp,"%s ",goods[i].name);
 fprintf(shopfp,"%f ",goods[i].price);
 fprintf(shopfp,"%f ",goods[i].discount);
 fprintf(shopfp,"%d ",goods[i].number);
-fprintf(shopfp,"%f ",goods[i].totalPayment);
+fprintf(shopfp,"%f\n",goods[i].totalPayment);
 
 /*输入成功提示*/
 printf("文件写入完成!");
@@ -805,27 +820,31 @@ printf("找不到购物车文件\n");
 exit(0);
 }
 
+printf("请输入要读取的购物车内物品数量：\n");
+scanf("%d",&input_num);
 
-
-int i=0;
-while(fscanf(shoppfp,"%d",&goods[i].code)!=EOF)
+int i;
+for(i=0;i<input_num;i++)
 {
+fscanf(shoppfp,"%d",&goods[i].code);
 fscanf(shoppfp,"%s",&goods[i].name);
 fscanf(shoppfp,"%lf",&goods[i].price);
 fscanf(shoppfp,"%lf",&goods[i].discount);
 fscanf(shoppfp,"%d",&goods[i].number);
 fscanf(shoppfp,"%lf",&goods[i].totalPayment);
-  i++;
 }
-int sum=i-1;
+
 double TotalPayment;
-for(int j=0;j<sum;j++)
+for(i=0;i<input_num;i++)
 {
-TotalPayment=TotalPayment+goods[j].totalPayment;//***计算购物车内商品总价
+TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价
 }
 printf("\n商品总价：%f",TotalPayment);
 
 fclose(shoppfp);
+
+
+
 
 void Profit(double TotalPayment);
 Profit(TotalPayment);//***记录本次购物的交易额
