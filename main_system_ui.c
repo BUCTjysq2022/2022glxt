@@ -44,44 +44,44 @@ int main()
 {   
     while (1)
     {
-        system("clear");
+        system("cls");
         printf("\t***********************************\n");
         printf("\t\t欢迎进入超市管理系统\n");
         printf("\t***********************************\n");
         switch (menu()) //选择函数，选择功能
         {
         case 1:
-            system("clear");
+            system("cls");
             establish();
             break;
 
         case 2:
-            system("clear");
+            system("cls");
             back();
             break;
 
         case 3:
-            system("clear");
+            system("cls");
             disstore();
             break;
 
         case 4:
-            system("clear");
+            system("cls");
             shop();
             break;
 
         case 5:
-            system("clear");
+            system("cls");
             calculate();
             break;
 
         case 6:
-            system("clear");
+            system("cls");
             search();
             break;
 
         case 7:
-            system("clear");
+            system("cls");
             printf("感谢使用，再见!\n");
             exit(0);
         }
@@ -134,14 +134,14 @@ void establish()
     printf("1.手动录入\n");
     printf("2.文件录入\n");
     scanf("%d", &input_method);
-    system("clear");
+    system("cls");
     switch (input_method)
     {
     case 1:
         /**手动录入**/
         printf("请输入想要添加的商品数量\n");
         scanf("%d", &input_num);
-        system("clear");
+        system("cls");
         /*输入数组*/
         for (i = 0; i < input_num; i++)
         {
@@ -173,7 +173,7 @@ void establish()
             scanf("%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
             printf("保质期至：\n");
             scanf("%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
-            system("clear");
+            system("cls");
             printf("第%d件商品录入完成！\n", i + 1);
         }
         if (input_num == i && input_num!=1)
@@ -206,7 +206,7 @@ void establish()
 
     case 2:
         /**文件录入**/
-        system("clear");
+        system("cls");
         /*检测输入文件是否存在*/
         if ((infp = fopen("input.txt", "r")) == NULL)
         {
@@ -298,7 +298,7 @@ void back()
     FILE *new_fp;
 
     /***退货***/
-    system("clear");
+    system("cls");
     /**数据库导入数组**/
     i=0;
     while (fscanf(fp, "%d", &item_array[i].id) != EOF)
@@ -341,24 +341,24 @@ void back()
         printf("\n请输入想要退货的商品货号：\n");
         scanf("%d", &to_be_deleted);
         to_be_deleted -= 1;
-        system("clear");
+        system("cls");
         printf("\n请输入想要退货的数量:\n");
         printf("(目前库存%d件)\n", item_array[to_be_deleted].stock_quantity);
         scanf("%d", &delete_num);
 
         /*删除操作*/
         item_array[to_be_deleted].stock_quantity -= delete_num;
-        system("clear");
+        system("cls");
         printf("\n操作成功！\n");
         sleep(1);
-        system("clear");
+        system("cls");
 
         /*继续操作*/
         printf("是否继续删除？\n");
         printf("1.继续删除\n");
         printf("2.停止删除\n");
         scanf("%d", &whether_continue);
-        system("clear");
+        system("cls");
     }
 
     //***将数组写入新文件***//
@@ -441,19 +441,19 @@ void shop()
     switch (shop_menu())
     {
     case 1:
-      system("clear");
+      system("cls");
       disshop();
-      system("clear");
+      system("cls");
       break; //***显示购物车商品
 
     case 2:
-      system("clear");
+      system("cls");
       chanshop();
-      system("clear");
+      system("cls");
       break; //***修改购物车商品
 
     case 3:
-      system("clear");
+      system("cls");
       return; //***返回
     }
   }
@@ -596,7 +596,7 @@ void chanshop()
   printf("\t\t1.添加商品\n");
   printf("\t\t2.删除商品\n");
   scanf("%d", &input_method);
-  system("clear");
+  system("cls");
   switch (input_method)
   {
 
@@ -617,7 +617,7 @@ void chanshop()
       {
         if (item_array[i].id == input_id)
         {
-          system("clear");
+          system("cls");
           t = i;
           printf("\t库中有此商品，商品信息为：\n");
           printf("货号：%d \n", item_array[i].id);
@@ -762,7 +762,7 @@ int calculate_menu()
     if (select < 1 || select > 3)
       printf("\n\t输入错误，请重新输入:");
     else
-      system("clear");
+      system("cls");
       break;
   }
   return select;
@@ -830,7 +830,7 @@ int calculate_all()
   }
   printf("\n\n\t按任意键继续...");
   scanf("%d",&GoBack);
-  system("clear");
+  system("cls");
 }
 
 //***记录每次购物的交易额***/
