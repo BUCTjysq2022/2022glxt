@@ -632,7 +632,6 @@ printf("库存：%d \n",item_array[i].stock_quantity);
 printf("生产日期：%d年%d月%d日\n",item_array[i].manufacture_date[0],item_array[i].manufacture_date[1],item_array[i].manufacture_date[2]);
 printf("进货日期：%d年%d月%d日\n",item_array[i].in_date[0],item_array[i].in_date[1],item_array[i].in_date[2]);
 printf("保质期至：%d年%d月%d日\n",item_array[i].expiry_date[0],item_array[i].expiry_date[1],item_array[i].expiry_date[2]);
-break;
 
 char choicey[200];
 printf("\n是否将此商品加入购物车？(是Y/否N）");
@@ -655,6 +654,8 @@ while(goods[j].code!=0)//此处如果不等于0，则说明结构体数组的这
 {
 j++;
 }
+
+
 
 goods[j].code=item_array[t].id;
 strcpy(goods[j].name,item_array[t].name);
