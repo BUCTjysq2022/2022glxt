@@ -340,7 +340,7 @@ void back()
 
     /**展示数据库**/
     printf("\n数据库中有如下商品：\n");
-    for (i = 0; i < sum-1; i++)
+    for (i = 0; i < sum; i++)
     {
         printf("货号：%d \n", item_array[i].id);
         printf("类别：%s ", item_array[i].category);
