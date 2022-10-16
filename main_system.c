@@ -44,6 +44,7 @@ int mode;
 int i,sum;//sum记录文件中有几行，用i进行遍历
 struct item item_array[100];
 int GoBack;
+int lijian=0; 
 
 
 
@@ -625,6 +626,9 @@ void chanshop()
     float discount;     //折扣
     int number;          //数量
     float totalPayment; //总额
+    int manufacture_date[3];//生产日期
+	int in_date[3];//进货日期
+	int expiry_date[3];//保质期
   };
   struct Goods goods[100];
   int e;
@@ -699,6 +703,15 @@ void chanshop()
               goods[j].price = item_array[t].out_prize;
               item_array[j].stock_quantity = item_array[t].stock_quantity - k;
               goods[j].totalPayment = k * item_array[t].out_prize;
+              goods[j].manufacture_date[0]=item_array[t].manufacture_date[0]; 
+			  goods[j].manufacture_date[1]=item_array[t].manufacture_date[1];
+				goods[j].manufacture_date[2]=item_array[t].manufacture_date[2];
+				goods[j].in_date[0]=item_array[t].in_date[0]; 
+				goods[j].in_date[1]=item_array[t].in_date[1];
+				goods[j].in_date[2]=item_array[t].in_date[2];
+				goods[j].expiry_date[0]=item_array[t].expiry_date[0]; 
+				goods[j].expiry_date[1]=item_array[t].expiry_date[1];
+				goods[j].expiry_date[2]=item_array[t].expiry_date[2];
               printf("\n\t添加商品至购物车成功！\n");
             }
             break;
@@ -760,6 +773,9 @@ void chanshop()
   fprintf(shopfp, "%f ", goods[i].discount);
   fprintf(shopfp, "%d ", goods[i].number);
   fprintf(shopfp, "%f \n", goods[i].totalPayment);
+  fprintf(shopfp,"%d %d %d  ",goods[i].manufacture_date[0],goods[i].manufacture_date[1],goods[i].manufacture_date[2]);
+  fprintf(shopfp,"%d %d %d ",goods[i].in_date[0],goods[i].in_date[1],goods[i].in_date[2]);
+  fprintf(shopfp,"%d %d %d\n\n",goods[i].expiry_date[0],goods[i].expiry_date[1],goods[i].expiry_date[2]);
 
   /*输入成功提示*/
   printf("\t文件写入完成!\n");
@@ -772,121 +788,237 @@ void chanshop()
 //***10***计算功能***//
 void calculate()
 {
-  int calculate_menu(), calculate_all();
-  while (1)
-  {
-    switch (calculate_menu())
-    {
-    case 1:
-      calculate_all();
-      break; //***计算购物车内的商品总价
+	int calculate_menu(),calculate_all(),fangkui_txt();
+	while(1)
+	{
+		switch(calculate_menu())
+		{
+			case 1:calculate_all();lijian=0;break;//***计算购物车内的商品总价 
+			
+			case 2:calculate_all();lijian=0;break;
+			
+			case 3:calculate_all();lijian=1;break;
+			
+			case 4:calculate_all();lijian=0;break;
+			
+			case 5:fangkui_txt();break;
 
-    case 2:
-      return; //***返回
-    }
-  }
+			case 6:return;//***返回
+		}
+	}
 }
-
 
 
 
 //***11***计算购物车内的商品总价的菜单**//
 int calculate_menu()
 {
-  char import[5];
-  int select;
-  printf("\n\t\t请选择操作\n");
-  printf("\t-----------------------------\n");
-  printf("\t1.计算当前购物车内的商品总价\n");
-  printf("\t2.退出\n");
-  printf("\t-----------------------------\n\n");
+	char  import[5];
+	int   select;
+	printf("\n请选择操作\n");
+	printf("-----------------------\n");
+	printf("1.微信支付\n");
+	printf("2.支付宝支付\n");
+	printf("3.银行卡支付\n");
+	printf("4.现金支付\n");
+	printf("5.商品反馈\n");
+	printf("6.退出\n");
+	printf("-----------------------\n\n");
+	
+	while (1)
+	{
+		fflush(stdin);
+		gets(import);
+		select = atoi(import);
+		if (select<1 || select>7)
+			printf("\n输入错误，请重新输入:");
+		else
+			break;
+	}
+	return select;
+} 
 
-  while (1)
-  {
-    fflush(stdin);
-    scanf("%d",&select);
-    if (select < 1 || select > 3)
-      printf("\n\t输入错误，请重新输入:");
-    else
-      system("cls");
-      break;
-  }
-  return select;
-}
+
+
+//***让顾客反映超市没有但需要的商品***//
+int fangkui_txt()
+{
+	
+	printf("请输入需要的商品，但是超市目前还没有的，我们将会马上准备，感谢您的谅解！\n") ;
+    struct Need
+	{
+        char name[200];	 
+	} ;
+    struct Need need[100]={0};
+    /**手动录入**/
+	printf("请输入想要添加的商品数量\n");
+	scanf("%d",&input_num);
+	/*输入数组*/
+	for(i=0;i<input_num;i++)
+	{
+		printf("正在录入第%d件商品：\n",i+1);
+		printf("请输入所需商品信息：\n");
+		fflush(stdin);
+		gets(need[i].name);
+	}
+	/***检测需求文件是否存在***/
+	FILE *rfp;
+	if((rfp=fopen("require.txt","a+"))==NULL)
+	{
+		printf("\n找不到需求文件");
+		exit(0);
+	}//***录入文件***// 
+	for(i=0;i<input_num;i++)
+		{
+            fprintf(rfp,"%s ",need[i].name);
+        }
+
+	/*输入成功提示*/
+	printf("\n已成功提交您的需求，我们将会第一时间为你解决!");
+	
+	fclose(rfp);
+} 
 
 
 
-
-//***12***计算购物车内的商品总价***//
+//***12计算购物车内的商品总价***//
 int calculate_all()
 {
-  struct Goods //***购物车结构体定义***//
-  {
-    int code;
-    char name[20];
-    double price;
-    double discount;     //折扣
-    int number;          //数量
-    double totalPayment; //总额
-  };
-  struct Goods goods[100];
-  /***检测购物车文件是否存在***/
-  FILE *shoppfp, *pff;
-  if ((shoppfp = fopen("shopping.txt", "a+")) == NULL)
-  {
-    printf("\t找不到购物车文件\n");
-    exit(0);
-  }
+	struct Goods//***购物车结构体定义***//
+    {
+        int code;
+        char name[20];
+        double price;
+        double discount;//折扣
+        int number;//数量
+        double totalPayment;//总额
+        int manufacture_date[3];//生产日期
+	    int in_date[3];//进货日期
+     	int expiry_date[3];//保质期
+    };
+    struct Goods goods[100]={0};
+     /***检测购物车文件是否存在***/
+	FILE *shoppfp,*pff;
+	if((shoppfp=fopen("shopping.txt","a+"))==NULL)
+	{
+		printf("找不到购物车文件\n");
+		exit(0);
+	}
+	
+	printf("请输入要读取的购物车内物品数量：\n");
+	scanf("%d",&input_num);
+	
+	int i;
+	for(i=0;i<input_num;i++)
+	{
+        fscanf(shoppfp,"%d",&goods[i].code);
+		fscanf(shoppfp,"%s",&goods[i].name);
+		fscanf(shoppfp,"%lf",&goods[i].price);
+		fscanf(shoppfp,"%lf",&goods[i].discount);
+		fscanf(shoppfp,"%d",&goods[i].number);
+		fscanf(shoppfp,"%lf",&goods[i].totalPayment);
+		fscanf(shoppfp,"\n生产日期：%d年%d月%d日  ",&goods[i].manufacture_date[0],&goods[i].manufacture_date[1],&goods[i].manufacture_date[2]);
+		fscanf(shoppfp,"\n进货日期：%d年%d月%d日  ",&goods[i].in_date[0],&goods[i].in_date[1],&goods[i].in_date[2]);
+		fscanf(shoppfp,"\n保质期至：%d年%d月%d日\n\n",&goods[i].expiry_date[0],&goods[i].expiry_date[1],&goods[i].expiry_date[2]);
+		
+	}
+    
+    /***根据保质期给用户折扣***/
+    int now_day,now_month,now_year;
+    time_t timep;
+    struct tm *p;
+    char time1[28];
+    time (&timep);
+    p=gmtime(&timep);
+	now_day=p->tm_mday;/*获取当前月份日数,范围是1-31*/
+    now_month=1+p->tm_mon;/*获取当前月份,范围是0-11,所以要加1*/
+    now_year=1900+p->tm_year;/*获取当前年份,从1900开始，所以要加1900*/
+	
+	double day1,day2;
+	double date(int n, int m1, int d1, int m, int m2, int d2);
+	int discount; 
+	for(i=0;i<input_num;i++)
+	{
+		day1=date(now_year,now_month,now_day,goods[i].expiry_date[0],goods[i].expiry_date[1],goods[i].expiry_date[2]);
+	
+		if(day1<10.0)
+		{
+			goods[i].totalPayment=0.8*goods[i].totalPayment;
+		}
+		if(day1<20.0)
+		{
+			goods[i].totalPayment=0.9*goods[i].totalPayment;
+		}
+		if(day1<30.0)
+		{
+			goods[i].totalPayment=0.95*goods[i].totalPayment;
+		}
+	}
+    double TotalPayment;
+	for(i=0;i<input_num;i++)
+	{
+		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
+    }
+	printf("本店会根据保质日期给您相应折扣，根据此次购物，则总价为：%lf",TotalPayment);
+	int Profit(double TotalPayment);
+	Profit(TotalPayment);//***记录本次购物的交易额 
+    fclose(shoppfp);
+	/***进行随机立减功能***/
+	/***随机数的取值***/
+	//***srand()用来设置rand()产生随机数时的随机数种子。参数seed必须是个整数，通常可以利用geypid()或time(0)的返回值来当做seed
+    if(lijian==1)
+	{
+	    srand(time(0));
+     	double newPayment;
+	    newPayment=TotalPayment-(rand()%10)*0.01*TotalPayment;
+	    printf("\n并且由于是使用银行卡支付，本店有随机立减的优惠，则最后的总价为：%f\n",newPayment);
+	} 
 
-  i=0;
-  while (fscanf(shoppfp, "%d", &item_array[i].id) != EOF)
-  {
-    fscanf(shoppfp, "%d", &goods[i].code);
-    fscanf(shoppfp, "%s", &goods[i].name);
-    fscanf(shoppfp, "%lf", &goods[i].price);
-    fscanf(shoppfp, "%lf", &goods[i].discount);
-    fscanf(shoppfp, "%d", &goods[i].number);
-    fscanf(shoppfp, "%lf", &goods[i].totalPayment);
-    i++;
-  }
-  sum=i;
-
-  double TotalPayment;
-  for (i = 0; i < sum; i++)
-  {
-    TotalPayment = TotalPayment + goods[i].totalPayment; //***计算购物车内商品总价
-  }
-  printf("\n\t商品总价：%0.2f", TotalPayment);
-
-  fclose(shoppfp);
-
-  void Profit(double TotalPayment);
-  Profit(TotalPayment); //***记录本次购物的交易额
-
-  /***进行随机立减功能***/
-  /***随机数的取值***/
-
-
-  srand(time(0));//***srand()用来设置rand()产生随机数时的随机数种子。参数seed必须是个整数，通常可以利用geypid()或time(0)的返回值来当做seed
-  double newPayment;
-  newPayment = TotalPayment - (rand() % 10 + 1) * 0.01 * TotalPayment;
-  printf("\n\n\n\t由于本店有随机立减的优惠，则最后的总价为：%0.2f\n", newPayment);
-  printf("\n\n\n\t谢谢惠顾，欢迎下次购物！");
-
-
-
-  /***清空购物车文件中的内容***/
-  pff = fopen("shopping.txt", "w");
-  if (pff)
-  {
-    printf("\n\t\t\t(购物车物品已清空)");
-    fclose(pff);
-  }
-  printf("\n\n\t按任意键继续...");
-  scanf("%d",&GoBack);
-  system("cls");
+	
+	printf("\n谢谢惠顾，欢迎下次购物！");
+	
+	/***清空购物车文件中的内容***/
+	pff=fopen("shopping.txt","w");
+	if(pff)
+	{
+		printf("\n购物车物品已清空");
+		fclose(pff);
+	} 
 }
 
+
+//***计算两个日期相差的天数***//
+double date(int n, int m1, int d1, int m, int m2, int d2)  //为了主函数较简洁  函数体部分如下
+{
+	int i,j,k,t1,t2,q,y,sum = 0;
+	int a[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };/*数组中第一个元素直接赋值为0，与月份相对应*/
+	for (i = n; i <= m; i++)        /*外层循环，从开始年份开始自增循环+1年直到你输入的年份*/
+	{
+		if (i == n)
+			t1 = m1;   //将起始月份赋值给变量t1
+		else t1 = 1;   //当年份自增后  月份开始赋值为1（除起始年份和目标年份外 ）
+		if (i == m)   
+			t2 = m2;   //当i自增到目标月份时 将目标月份的值赋给t2
+		else t2 = 12;    
+		for (j = t1; j <= t2; j++)  //t1,t2用来计算相应的月份差
+		{
+			if ((i % 4 == 0 && i % 100 != 0) || i % 400 == 0)//判断是否为闰年，若为闰年将二月份重新赋值为29天
+				a[2] = 29;
+			else a[2] = 28;    
+			if (i == n && j == m1)    
+				q = d1;
+			else q = 1;
+			if (i == n && j == m2)
+				y = d2;
+			else y = a[j];
+			for (k =q; k <= y;k++)
+			{
+				sum++;        //算每个月份相差多少天
+			}
+		}
+	}
+	return sum;   //返回值就是两个日期之前相差的天数了
+}
 
 
 
@@ -968,3 +1100,4 @@ void search()
   }
   fclose(fp);
 }
+
