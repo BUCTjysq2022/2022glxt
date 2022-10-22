@@ -19,8 +19,6 @@ struct item
 };
 
 
-
-
 //***自定义函数定义***//
 void establish(); //进货功能
 int menu();       //主菜单功能
@@ -29,10 +27,12 @@ void disstore();  //显示库存函数
 void shop();      //购物车功能
 void calculate(); //计算功能
 void search();    //查找功能
-void disshop();   //***提前声明函数
-void chanshop();  //***提前声明函数
-int shop_menu();  //***提前声明函数
-
+void disshop();   //***显示商品信息函数
+void chanshop();  //***修改购物车功能函数
+int shop_menu();  //***购物车菜单函数
+void rank();//***排序功能函数
+void category();//***按类别查找函数
+void dismenu();//***显示函数的菜单函数
 
 
 
@@ -72,7 +72,7 @@ int main()
 
         case 3:
             system("cls");
-            disstore();
+            dismenu();
             break;
 
         case 4:
@@ -569,6 +569,8 @@ void disshop()
 
 
 
+
+
 //***9***修改购物车函数功能***//
 void chanshop()
 {
@@ -626,9 +628,6 @@ void chanshop()
     float discount;     //折扣
     int number;          //数量
     float totalPayment; //总额
-    int manufacture_date[3];//生产日期
-	int in_date[3];//进货日期
-	int expiry_date[3];//保质期
   };
   struct Goods goods[100];
   int e;
@@ -703,16 +702,21 @@ void chanshop()
               goods[j].price = item_array[t].out_prize;
               item_array[j].stock_quantity = item_array[t].stock_quantity - k;
               goods[j].totalPayment = k * item_array[t].out_prize;
-              goods[j].manufacture_date[0]=item_array[t].manufacture_date[0]; 
-			  goods[j].manufacture_date[1]=item_array[t].manufacture_date[1];
-				goods[j].manufacture_date[2]=item_array[t].manufacture_date[2];
-				goods[j].in_date[0]=item_array[t].in_date[0]; 
-				goods[j].in_date[1]=item_array[t].in_date[1];
-				goods[j].in_date[2]=item_array[t].in_date[2];
-				goods[j].expiry_date[0]=item_array[t].expiry_date[0]; 
-				goods[j].expiry_date[1]=item_array[t].expiry_date[1];
-				goods[j].expiry_date[2]=item_array[t].expiry_date[2];
               printf("\n\t添加商品至购物车成功！\n");
+              
+              
+              fprintf(shopfp, "%d ", goods[i].code);
+              fprintf(shopfp, "%s ", goods[i].name);
+              fprintf(shopfp, "%f ", goods[i].price);
+              fprintf(shopfp, "%f ", goods[i].discount);
+              fprintf(shopfp, "%d ", goods[i].number);
+              fprintf(shopfp, "%f \n", goods[i].totalPayment);
+
+              /*输入成功提示*/
+              printf("\t文件写入完成!\n");
+
+              fclose(shopfp);
+               
             }
             break;
           }
@@ -729,7 +733,7 @@ void chanshop()
       fflush(stdin);
       choicex[200] = getchar();
     } while (choicex[200] == 'Y' || choicex[200] == 'y'); //***do-while函数判断***//
-
+    fclose(fp);
     break;
   }
 
@@ -739,7 +743,40 @@ void chanshop()
     //***删除商品***//
     char choicew[200];
     do
+    {/***变量定义***/
+    int to_be_deleted, delete_num;
+    int whether_continue = 1;
+
+    /***检测数据库文件是否存在***/
+    FILE *oldfp;
+    if ((oldfp = fopen("shopping.txt", "r")) == NULL)
     {
+        printf("找不到数据库文件");
+        exit(0);
+    }
+
+    /***输入文件指针定义***/
+    FILE *new_fp;
+
+    /***退货***/
+    system("cls");
+    /**数据库导入数组**/
+    i=0;
+    while (fscanf(oldfp, "%d", &goods[i].code) != EOF)
+    {
+
+        fscanf(oldfp, "%d", &goods[i].code);
+        fscanf(oldfp, "%s", &goods[i].name);
+        fscanf(oldfp, "%f", &goods[i].price);
+        fscanf(oldfp, "%d", &goods[i].discount);
+        fscanf(oldfp, "%d", &goods[i].number);
+        fscanf(oldfp, "%f", &goods[i].totalPayment);
+        i++;
+    }
+    sum=i;
+    fclose(oldfp);
+
+
       printf("\t请输入想要删除的商品货号\n");
       int deleid;
       scanf("%d", &deleid);
@@ -760,28 +797,44 @@ void chanshop()
             goods[i].number = goods[i].number - delenum;
             break;
           }
+
+          //***将数组写入新文件***//
+
+            /*新建数据库*/
+       
+              if ((new_fp = fopen("shopping_new.txt", "w")) == NULL)
+            {
+                printf("已新建数据库文件");
+                exit(0);
+            }
+     
+
+                 for(i=0;i<sum;i++)
+             {
+                fprintf(new_fp, "%d ", goods[i].code);
+                fprintf(new_fp, "%s ", goods[i].name);
+                fprintf(new_fp, "%d ", goods[i].number);
+                fprintf(new_fp, "%f ", goods[i].price);
+                fprintf(new_fp, "%f ", goods[i].discount);
+                fprintf(new_fp, "%f ", goods[i].totalPayment);
+             }
+
+              fclose(new_fp);
+              system("del shopping.txt");
+              system("rename shopping_new.txt shopping.txt"); 
+              printf("\n数据库写入完成！\n");
+
         }
       }
+      
+
+
     } while (choicew[200] == 'Y' || choicew[200] == 'y'); //***do-while函数判断***//
     break;
   }
   }
-
-  fprintf(shopfp, "%d ", goods[i].code);
-  fprintf(shopfp, "%s ", goods[i].name);
-  fprintf(shopfp, "%f ", goods[i].price);
-  fprintf(shopfp, "%f ", goods[i].discount);
-  fprintf(shopfp, "%d ", goods[i].number);
-  fprintf(shopfp, "%f \n", goods[i].totalPayment);
-  fprintf(shopfp,"%d %d %d  ",goods[i].manufacture_date[0],goods[i].manufacture_date[1],goods[i].manufacture_date[2]);
-  fprintf(shopfp,"%d %d %d ",goods[i].in_date[0],goods[i].in_date[1],goods[i].in_date[2]);
-  fprintf(shopfp,"%d %d %d\n\n",goods[i].expiry_date[0],goods[i].expiry_date[1],goods[i].expiry_date[2]);
-
-  /*输入成功提示*/
-  printf("\t文件写入完成!\n");
-
-  fclose(shopfp);
 }
+
 
 
 
@@ -960,7 +1013,7 @@ int calculate_all()
 		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
     }
 	printf("本店会根据保质日期给您相应折扣，根据此次购物，则总价为：%lf",TotalPayment);
-	int Profit(double TotalPayment);
+	void Profit(double TotalPayment);
 	Profit(TotalPayment);//***记录本次购物的交易额 
     fclose(shoppfp);
 	/***进行随机立减功能***/
@@ -1101,3 +1154,266 @@ void search()
   fclose(fp);
 }
 
+
+
+//***15***显示函数的菜单函数***//
+void dismenu()
+{
+       while(1)
+       {
+        sleep(1);
+        system("cls");
+    printf("\n\t\t请选择数字进行操作\n");
+    printf("\t\t1.显示所有商品信息\n");
+    printf("\t\t2.按类别显示商品\n");
+    printf("\t\t3.按货号大小排序商品进行显示\n");
+    printf("\t\t4.退出\n");
+        
+        int input = 0;
+        scanf("%d",&input);
+        switch (input) //选择函数，选择功能
+        {
+        case 1:
+            system("cls");
+            disstore();
+            break;
+
+        case 2:
+            system("cls");
+            category();
+            break;
+
+        case 3:
+            system("cls");
+            rank();
+            break;
+
+        case 4:
+            system("cls");
+            exit(0);
+            break;
+        }
+        
+        }
+    
+}
+
+
+//***创建一个结构体***//
+typedef struct product
+{
+    int id;                  //货号
+    char category[10];       //类型
+    char name[30];           //名称
+    int out_prize;           //售价
+    int stock_quantity;      //总库存
+    int manufacture_date[3]; //生产日期
+    int expiry_date[3];      //保质期
+}PRODUCT;
+
+
+
+
+//***16-1***交换函数***//
+void swap(PRODUCT *A, PRODUCT *B)
+{
+    PRODUCT temp;
+
+    temp = *A;
+    *A = *B;
+    *B = temp;
+}
+
+
+
+
+//***16-2***降序函数***//
+int down(int a, int b)
+{
+    if (a > b)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+
+//***16-3***升序函数***//
+int up(int a, int b)
+{
+    if (a < b)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+
+//***16-4***输出一条功能函数***//
+void output(PRODUCT user)
+{
+    printf("%d %s %d %d\n", user.id, user.category, user.out_prize, user.stock_quantity);
+}
+
+
+
+
+//***16-5***自定义函数输出所有条目***//
+void output_all(PRODUCT *list, int length)
+{
+    printf("ID   UserName   Income   Expenses\n");
+
+    for (int i = 0; i < length; i++)
+    {
+        output(list[i]);
+    }
+}
+
+
+
+
+
+//***16-6***指针传参排序函数***//
+void sortrank(PRODUCT *list, int length, int strategy)
+{
+    int (*p)(int, int); // 定义一个函数指针
+
+    if (strategy == 1)
+    {
+        // 升序
+        p = up;
+    }
+    else
+    {
+        // 降序
+        p = down;
+    }
+
+    for (int i = 0; i < length - 1; i++)
+    {
+        for (int k = 0; k < length - 1 - i; k++)
+        {
+            if (p(list[k].id, list[k + 1].id))
+            {
+                swap(&(list[k]), &(list[k + 1]));
+            }
+        }
+    }
+}
+
+
+
+
+
+//***16***排序输出函数***//
+void rank()
+{
+ /***检测数据库文件是否存在***/
+  FILE *fp;
+  if ((fp = fopen("database.txt", "a+")) == NULL)
+  {
+    printf("找不到数据库文件");
+    exit(0);
+  }
+ 
+ 
+  int sum = 0;
+  /**数据库导入数组**/
+  int i = 0;
+  while (fscanf(fp, "%d", &item_array[i].id) != EOF)
+  {
+    fscanf(fp, "%s", &item_array[i].category);
+    fscanf(fp, "%s", &item_array[i].name);
+    fscanf(fp, "%d", &item_array[i].in_prize);
+    fscanf(fp, "%d", &item_array[i].out_prize);
+    fscanf(fp, "%d", &item_array[i].stock_quantity);
+    fscanf(fp, "%d", &item_array[i].purchase_quantity);
+    fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
+    fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
+    fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
+    i++;
+  }
+   sum=i;
+   PRODUCT item_list[100];//***给PRODUCT结构体定义
+   
+   for(i=0;i<sum;i++)//***循环赋值给item_list[100]
+   {
+      item_list[i].id=item_array[i].id;
+      strcpy(item_list[i].name,item_array[i].name);
+      strcpy(item_list[i].category,item_array[i].category);
+      item_list[i].out_prize=item_array[i].out_prize;
+      item_list[i].expiry_date[0]=item_array[i].expiry_date[0];
+      item_list[i].expiry_date[1]=item_array[i].expiry_date[1];
+      item_list[i].expiry_date[2]=item_array[i].expiry_date[2];
+      item_list[i].stock_quantity=item_array[i].stock_quantity;
+      item_list[i].manufacture_date[0]=item_array[i].manufacture_date[0];
+      item_list[i].manufacture_date[1]=item_array[i].manufacture_date[1];
+      item_list[i].manufacture_date[2]=item_array[i].manufacture_date[2];
+   }
+
+   printf("请输入升序还是降序排列：升序1/降序0");
+   int p;
+   scanf("%d",&p);
+
+   sortrank(item_list,sum,p);//***调用冒泡排序函数进行排序
+   output_all(item_list,sum);//***调用输出函数全部输出
+
+}
+
+
+
+//***17***分类查找函数***//
+void category()
+{
+  /***检测数据库文件是否存在***/
+  FILE *fp;
+  if ((fp = fopen("database.txt", "a+")) == NULL)
+  {
+    printf("找不到数据库文件");
+    exit(0);
+  }
+ 
+
+
+ 
+  int sum = 0;
+  /**数据库导入数组**/
+  int i = 0;
+  while (fscanf(fp, "%d", &item_array[i].id) != EOF)
+  {
+    fscanf(fp, "%s", &item_array[i].category);
+    fscanf(fp, "%s", &item_array[i].name);
+    fscanf(fp, "%d", &item_array[i].in_prize);
+    fscanf(fp, "%d", &item_array[i].out_prize);
+    fscanf(fp, "%d", &item_array[i].stock_quantity);
+    fscanf(fp, "%d", &item_array[i].purchase_quantity);
+    fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
+    fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
+    fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
+    i++;
+  }
+   sum=i;
+   
+   
+   for (int j=0; j < sum; j++)
+    {
+        if(strcmp(item_array[j].category,"food")==0)
+        {
+          printf("--------------------------------------------\n");
+          printf("类别为food的商品有：");
+			    printf("货号       品名           单价    数量\n");
+          printf("%s       %s            %d      %d\n",item_array[j].category,item_array[j].name,item_array[j].out_prize,item_array[j].stock_quantity);
+        }
+    }
+
+
+
+}
