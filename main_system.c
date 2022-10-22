@@ -481,8 +481,7 @@ void shop()
       break; //***修改购物车商品
 
     case 3:
-      system("cls");
-      return; //***返回
+     return;
     }
   }
 }
@@ -547,7 +546,7 @@ void disshop()
     i++;
   }
   sum=i;
-  if(i=0)
+  if(i==0)
   {
 	  printf("购物车中没有商品！\n");
   }
@@ -564,6 +563,7 @@ void disshop()
   fclose(shopfp);
   printf("按任意键继续...");
   scanf("%d",&GoBack);
+
 }
 
 
@@ -846,15 +846,15 @@ void calculate()
 	{
 		switch(calculate_menu())
 		{
-			case 1:calculate_all();lijian=0;break;//***计算购物车内的商品总价 
+			case 1:system("cls");calculate_all();lijian=0;break;//***计算购物车内的商品总价 
 			
-			case 2:calculate_all();lijian=0;break;
+			case 2:system("cls");calculate_all();lijian=0;break;
 			
-			case 3:calculate_all();lijian=1;break;
+			case 3:system("cls");calculate_all();lijian=1;break;
 			
-			case 4:calculate_all();lijian=0;break;
+			case 4:system("cls");calculate_all();lijian=0;break;
 			
-			case 5:fangkui_txt();break;
+			case 5:system("cls");fangkui_txt();break;
 
 			case 6:return;//***返回
 		}
@@ -958,13 +958,11 @@ int calculate_all()
 		exit(0);
 	}
 	
-	printf("请输入要读取的购物车内物品数量：\n");
-	scanf("%d",&input_num);
+
 	
-	int i;
-	for(i=0;i<input_num;i++)
-	{
-        fscanf(shoppfp,"%d",&goods[i].code);
+	int i=0;
+	while(fscanf(shoppfp,"%d",&goods[i].code)!=EOF)
+	{  
 		fscanf(shoppfp,"%s",&goods[i].name);
 		fscanf(shoppfp,"%lf",&goods[i].price);
 		fscanf(shoppfp,"%lf",&goods[i].discount);
@@ -973,9 +971,10 @@ int calculate_all()
 		fscanf(shoppfp,"\n生产日期：%d年%d月%d日  ",&goods[i].manufacture_date[0],&goods[i].manufacture_date[1],&goods[i].manufacture_date[2]);
 		fscanf(shoppfp,"\n进货日期：%d年%d月%d日  ",&goods[i].in_date[0],&goods[i].in_date[1],&goods[i].in_date[2]);
 		fscanf(shoppfp,"\n保质期至：%d年%d月%d日\n\n",&goods[i].expiry_date[0],&goods[i].expiry_date[1],&goods[i].expiry_date[2]);
+    i++;
 		
 	}
-    
+    int sum=i;
     /***根据保质期给用户折扣***/
     int now_day,now_month,now_year;
     time_t timep;
@@ -990,7 +989,7 @@ int calculate_all()
 	double day1,day2;
 	double date(int n, int m1, int d1, int m, int m2, int d2);
 	int discount; 
-	for(i=0;i<input_num;i++)
+	for(i=0;i<sum;i++)
 	{
 		day1=date(now_year,now_month,now_day,goods[i].expiry_date[0],goods[i].expiry_date[1],goods[i].expiry_date[2]);
 	
@@ -1008,7 +1007,7 @@ int calculate_all()
 		}
 	}
     double TotalPayment;
-	for(i=0;i<input_num;i++)
+	for(i=0;i<sum;i++)
 	{
 		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
     }
@@ -1189,9 +1188,8 @@ void dismenu()
             break;
 
         case 4:
-            system("cls");
-            exit(0);
-            break;
+            return;
+            
         }
         
         }
@@ -1365,7 +1363,7 @@ void rank()
 
    sortrank(item_list,sum,p);//***调用冒泡排序函数进行排序
    output_all(item_list,sum);//***调用输出函数全部输出
-
+ sleep(100);
 }
 
 
