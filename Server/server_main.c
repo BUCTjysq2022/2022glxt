@@ -3,9 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
 //****定义商品结构体****//
 struct item
 {
