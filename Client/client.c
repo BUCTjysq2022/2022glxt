@@ -1,4 +1,4 @@
-#include<stdlib.h>
+#include<stdio.h>
 int main()
 {
 	system("ssh admin@120.48.62.121");
