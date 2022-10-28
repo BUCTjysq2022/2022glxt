@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+
 //****定义商品结构体****//
 struct item
 {
@@ -20,19 +21,24 @@ struct item
 
 
 //***自定义函数定义***//
-void establish(); //进货功能
-int menu();       //主菜单功能
-void back();      //退货函数
-void disstore();  //显示库存函数
-void shop();      //购物车功能
-void calculate(); //计算功能
-void search();    //查找功能
-void disshop();   //***显示商品信息函数
-void chanshop();  //***修改购物车功能函数
-int shop_menu();  //***购物车菜单函数
-void rank();//***排序功能函数
-void category();//***按类别查找函数
-void dismenu();//***显示函数的菜单函数
+void establish();  //***进货功能函数
+int menu();		     //***主菜单功能函数
+void back();	     //***退货函数
+void disstore();   //***显示库存函数
+void shop();	     //***购物车功能函数
+void calculate();  //***计算功能函数
+void search();	   //***查找功能函数
+void disshop();	   //***显示商品信息函数
+void chanshop();   //***修改购物车函数
+int shop_menu();   //***购物车菜单函数
+void rank();	     //***排序功能函数
+void category();   //***按类别查找函数
+void dismenu();	   //***显示函数的菜单函数
+int menuGuest();   //***客人菜单函数
+int menuCashier(); //***收银菜单函数
+int menuAdmin();   //***管理员菜单函数
+void vip();        //***会员管理函数
+void sign_in();    //***员工签到函数
 
 
 
@@ -41,92 +47,205 @@ int input_method;
 int input_num;
 int input_id;
 int mode;
-int i,sum;//sum记录文件中有几行，用i进行遍历
+int i, sum; // sum记录文件中有几行，用i进行遍历
 struct item item_array[100];
+int userType;
 int GoBack;
-int lijian=0; 
-
+int lijian=0;
 
 
 
 //***1***主函数整体***//
 int main()
-{   
-    while (1)
-    {
-        system("cls");
-        printf("\t***********************************\n");
-        printf("\t\t欢迎进入超市管理系统\n");
-        printf("\t***********************************\n");
-        switch (menu()) //选择函数，选择功能
-        {
-        case 1:
-            system("cls");
-            establish();
-            break;
-
-        case 2:
-            system("cls");
-            back();
-            break;
-
-        case 3:
-            system("cls");
-            dismenu();
-            break;
-
-        case 4:
-            system("cls");
-            shop();
-            break;
-
-        case 5:
-            system("cls");
-            calculate();
-            break;
-
-        case 6:
-            system("cls");
-            search();
-            break;
-
-        case 7:
-            system("cls");
-            printf("感谢使用，再见!\n");
-            exit(0);
-        }
-    }
-}
-
-
-
-
-//***2***菜单选择函数定义***//
-int menu()
 {
-    int select;
-    printf("\n\t\t请选择数字进行操作\n");
-    printf("\t\t1.进货\n");
-    printf("\t\t2.退货\n");
-    printf("\t\t3.显示所有信息\n");
-    printf("\t\t4.购物车\n");
-    printf("\t\t5.结算\n");
-    printf("\t\t6.查找\n");
-    printf("\t\t7.退出程序\n");
-    printf("\t\t请选择对应数字1--7:\n");
+	int choice;
+	system("cls");
+  	printf("1.顾客\n2.收银员\n3.管理员\n");
+	scanf("%d", &userType);
+	while (1)
+	{
+		//进入不同的用户界面
+		switch (userType)
+		{
+		case 1:
+			system("cls");
+			choice = menuGuest();
+			break;
+		case 2:
+			system("cls");
+			choice = menuCashier();
+			break;
+		case 3:
+			system("cls");
+			choice = menuAdmin();
+			break;
+		}
+		switch (choice) //选择函数，选择功能
+		{
+		case 1:
+			system("cls");
+			establish();          //***进货功能函数
+			break;
 
-    while (1)
-    {
-        fflush(stdin); //清空输入缓存流
-        scanf("%d",&select);
-        if (select < 1 || select > 7)
-            printf("输入错误，请重新输入:");
-        else
-            break;
-    }
-    return select;
+		case 2:
+			system("cls");
+			back();               //***退货函数
+			break;
+
+		case 3:
+			system("cls");
+			dismenu();            //***显示函数的菜单函数
+			break;
+
+		case 4:
+			system("cls");
+			shop();              //***购物车功能函数
+			break;
+
+		case 5:
+			system("cls");
+			calculate();         //***计算功能函数
+			break;
+
+		case 6:
+			system("cls");
+			search();            //***查找功能函数
+			break;
+    
+	  case 7:
+			system("cls");
+			vip();               //***会员管理函数
+      break;
+			
+    case 8:
+			system("cls");
+			sign_in();           //***员工签到函数
+      break;
+
+    case 9:
+			system("cls");
+			printf("感谢使用，再见!\n");
+			exit(0);
+		}
+	}
 }
 
+
+
+
+//***2.1***顾客菜单选择函数定义***//
+int menuGuest()
+{
+	int select;
+	int realSelect;
+	printf("\t\t请选择数字进行操作\n");
+	printf("\t\t1.显示所有商品\n");
+	printf("\t\t2.购物车\n");
+	printf("\t\t3.查找\n");
+	printf("\t\t4.会员功能\n");
+  printf("\t\t5.退出程序\n");
+	printf("\t\t请选择对应数字1--4:\n");
+
+	while (1)
+	{
+		fflush(stdin); //清空输入缓存流
+		scanf("%d", &select);
+		if (select < 1 || select > 4)
+			printf("输入错误，请重新输入:");
+
+		else
+			break;
+	}
+	if (select == 1)
+		realSelect = 3;
+
+	else if (select == 2)
+		realSelect = 4;
+
+	else if (select == 3)
+		realSelect = 6;
+
+  else if (select == 3)
+		realSelect = 7;
+
+	else if (select == 5)
+		realSelect = 9;
+	
+  
+  return realSelect;
+}
+
+
+
+
+//***2.2***收营员菜单选择函数定义***//
+int menuCashier()
+{
+	int select;
+	int realSelect;
+	printf("\t\t请选择数字进行操作\n");
+	printf("\t\t1.显示所有商品\n");
+	printf("\t\t2.结算\n");
+	printf("\t\t3.查找\n");
+	printf("\t\t4.员工考勤\n");
+  printf("\t\t5.退出程序\n");
+	printf("\t\t请选择对应数字1--5:\n");
+
+	while (1)
+	{
+		fflush(stdin); //清空输入缓存流
+		scanf("%d", &select);
+		if (select < 1 || select > 4)
+			printf("输入错误，请重新输入:");
+
+		else
+			break;
+	}
+	if (select == 1)
+		realSelect = 3;
+
+	else if (select == 2)
+		realSelect = 5;
+
+	else if (select == 3)
+		realSelect = 6;
+  
+  else if (select == 4)
+		realSelect = 8;
+
+	else if (select == 5)
+		realSelect = 7;
+	return realSelect;
+}
+
+
+
+
+//***2.3***管理员菜单选择函数定义***//
+int menuAdmin()
+{
+	int select;
+	printf("\t\t请选择数字进行操作\n");
+	printf("\t\t1.进货\n");
+	printf("\t\t2.退货\n");
+	printf("\t\t3.显示所有信息\n");
+	printf("\t\t4.购物车\n");
+	printf("\t\t5.结算\n");
+	printf("\t\t6.查找\n");
+	printf("\t\t7.退出程序\n");
+	printf("\t\t请选择对应数字1--7:\n");
+
+	while (1)
+	{
+		fflush(stdin); //清空输入缓存流
+		scanf("%d", &select);
+		if (select < 1 || select > 7)
+			printf("输入错误，请重新输入:");
+		else
+			break;
+	}
+	return select;
+}
 
 
 
@@ -299,6 +418,8 @@ void establish()
 
 
 
+
+
 //***4***退货函数定义***//
 void back()
 {
@@ -414,6 +535,8 @@ void back()
 
 
 
+
+
 //***5***显示库存功能***//
 void disstore()
 {
@@ -457,6 +580,8 @@ void disstore()
     printf("按任意键返回主菜单：\n");
     scanf("%d", &GoBack);   
 }
+
+
 
 
 
@@ -816,7 +941,7 @@ void chanshop()
                 fprintf(new_fp, "%d ", goods[i].number);
                 fprintf(new_fp, "%f ", goods[i].price);
                 fprintf(new_fp, "%f ", goods[i].discount);
-                fprintf(new_fp, "%f ", goods[i].totalPayment);
+                fprintf(new_fp, "%f\n", goods[i].totalPayment);
              }
 
               fclose(new_fp);
@@ -1039,6 +1164,9 @@ int calculate_all()
 }
 
 
+
+
+
 //***计算两个日期相差的天数***//
 double date(int n, int m1, int d1, int m, int m2, int d2)  //为了主函数较简洁  函数体部分如下
 {
@@ -1071,6 +1199,8 @@ double date(int n, int m1, int d1, int m, int m2, int d2)  //为了主函数较�
 	}
 	return sum;   //返回值就是两个日期之前相差的天数了
 }
+
+
 
 
 
@@ -1155,6 +1285,8 @@ void search()
 
 
 
+
+
 //***15***显示函数的菜单函数***//
 void dismenu()
 {
@@ -1195,6 +1327,8 @@ void dismenu()
         }
     
 }
+
+
 
 
 //***创建一个结构体***//
@@ -1357,7 +1491,7 @@ void rank()
       item_list[i].manufacture_date[2]=item_array[i].manufacture_date[2];
    }
 
-   printf("请输入升序还是降序排列：升序1/降序0");
+   printf("请输入升序还是降序排列：升序1/降序0\n");
    int p;
    scanf("%d",&p);
 
@@ -1365,6 +1499,8 @@ void rank()
    output_all(item_list,sum);//***调用输出函数全部输出
  sleep(100);
 }
+
+
 
 
 
@@ -1415,3 +1551,266 @@ void category()
 
 
 }
+
+
+
+struct worker
+{
+    char name[30];    //员工名字
+    int number;       //工号
+    int workday;      //签到次数
+}workers[1000];
+
+
+
+
+struct viper
+{
+    char name[30];    //会员姓名
+    int id;           //会员卡号码
+    int phone;        //会员电话
+    int money;        //会员卡储值
+}vipers[1000];
+
+
+
+
+
+//***会员管理函数
+void vip()
+{
+  
+  FILE *fp;
+  if ((fp = fopen("vip.txt", "a+")) == NULL)
+  {
+    printf("找不到数据库文件");
+    exit(0);
+  }
+
+  printf("请选择:\n");
+  printf("1.会员注册\n");
+  printf("2.会员卡充值\n");
+  
+  
+  int choice;
+  scanf("%d",&choice);
+  switch(choice)
+  {
+    case 1:                    //***会员注册信息录入
+    {
+      printf("请输入会员姓名：\n");
+      scanf("%s",&vipers[0].name);
+
+      printf("请输入会员卡卡号：\n");
+      scanf("%d",&vipers[0].id);
+
+      printf("请输入会员电话号码：\n");
+      scanf("%d",&vipers[0].phone);
+
+      printf("请输入储值金额：\n");
+      scanf("%d",&vipers[0].money);
+
+
+      fprintf(fp,"%s ",vipers[0].name);
+      fprintf(fp,"%d ",vipers[0].id);
+      fprintf(fp,"%d ",vipers[0].phone);
+      fprintf(fp,"%d\n",vipers[0].money);
+      printf("会员注册完成！");
+
+      fclose(fp);
+
+      break;
+
+    }
+
+    case 2:                    //***会员卡充值
+    {
+        
+        FILE *fps;
+      if ((fps = fopen("vip.txt", "a+")) == NULL)
+      {
+        printf("找不到数据库文件");
+        exit(0);
+      }
+
+      int i = 0;
+      int sum = 0;
+      while (fscanf(fps, "%d", &vipers[i].id) != EOF)   //录入文件内的会员信息
+      {
+        fscanf(fps, "%s", &vipers[i].name);
+        fscanf(fps, "%d", &vipers[i].id);
+        fscanf(fps, "%d", &vipers[i].phone);
+        fscanf(fps, "%d", &vipers[i].money);
+        i++;
+      }
+
+      sum = i;
+
+      fclose(fps);
+
+    
+       FILE *fps_new;
+      if ((fps_new = fopen("vip_new.txt", "a+")) == NULL)
+      {
+        printf("找不到数据库文件");
+        exit(0);
+      }
+
+
+      printf("请输入会员卡号：");
+      int card;
+      scanf("%d",&card);
+
+      
+      
+      for(i=0;i<sum;i++)
+      {
+        if(card == vipers[i].id)    //***进行充值，修改money的值
+        {
+          printf("请输入充值金额：");
+          int momey_income;
+          scanf("%d",&momey_income);
+          vipers[i].money = vipers[i].money + momey_income;
+        }
+      }
+
+      for(i=0;i<sum;i++)           //***将新信息写进新文件
+      {
+        fprintf(fps_new, "%s ", vipers[i].name);
+        fprintf(fps_new, "%d ", vipers[i].id);
+        fprintf(fps_new, "%d ", vipers[i].phone);
+        fprintf(fps_new, "%d ", vipers[i].money);
+      }
+
+
+     system("del vip.txt");//****这里有问题,删除旧文件无法删除
+     system("rename vip_new.txt vip.txt");//***修改新文件名
+
+     break;
+
+
+
+    }
+  }
+
+
+}        
+
+
+
+//***员工签到函数
+void sign_in()
+{
+  
+  FILE *fp;
+  if ((fp = fopen("workers.txt", "a+")) == NULL)
+  {
+    printf("找不到数据库文件");
+    exit(0);
+  }
+
+  printf("请选择：\n");
+  printf("1.员工注册\n");
+  printf("2.员工考勤\n");
+  
+  int i=0;
+  int choice;
+  scanf("%d",&choice);
+  
+  switch(choice)
+  {
+    case 1:         //***员工信息录入
+    {
+
+    system("cls");
+    printf("请输入员工姓名：\n");
+    scanf("%s",&workers[i].name);
+    
+    printf("请输入员工工号：\n");
+    scanf("%d",&workers[i].number);
+
+    workers[i].workday = 0;
+
+    fprintf(fp, "%s ", workers[i].name);
+    fprintf(fp, "%d ", workers[i].number);
+    fprintf(fp, "%d\n", workers[i].workday);
+    printf("员工注册完成！");
+    
+    fclose(fp);
+    
+    break;
+
+    }
+
+    case 2:              //***员工考勤打卡
+    {
+        FILE *fps;
+      if ((fps = fopen("workers.txt", "a+")) == NULL)
+      {
+        printf("找不到数据库文件");
+        exit(0);
+      }
+      
+      
+      int i = 0;
+      int sum = 0;
+      while (fscanf(fps, "%d", &workers[i].number) != EOF)
+      {
+        fscanf(fps, "%s", &workers[i].name);
+        fscanf(fps, "%d", &workers[i].number);
+        fscanf(fps, "%d", &workers[i].workday);
+        i++;
+      }
+      sum = i;
+      
+      fclose(fps);
+    
+
+      
+      
+      int sign_number;
+      printf("请输入你的工号：\n");
+      scanf("%d",&sign_number);
+
+      for(i=0;i<sum;i++)              //***员工考勤天数加1,打卡成功
+      {
+        if(sign_number == workers[i].number)
+        {
+          workers[i].workday = workers[i].workday + 1;
+        }
+      }
+
+      
+      
+      FILE *fps_new;
+      if ((fps_new = fopen("workers_new.txt", "a+")) == NULL)
+      {
+        printf("已新建数据库文件");
+        exit(0);
+      }
+      
+
+
+      
+      for(i=0;i<sum;i++)
+      {
+        fprintf(fps_new, "%s ", workers[i].name);
+        fprintf(fps_new, "%d ", workers[i].number);
+        fprintf(fps_new, "%d\n", workers[i].workday);
+      }
+      printf("打卡成功！\n");
+      sleep(5);
+      fclose(fps_new);
+
+
+    system("del workers.txt");//****这里有问题,删除旧文件无法删除
+    system("rename workers_new.txt workers.txt");//***修改新文件名
+     
+    break;
+
+    }
+
+  }
+
+}    
+
