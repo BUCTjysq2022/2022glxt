@@ -142,8 +142,7 @@ int menuGuest()
 	printf("\t\t1.显示所有商品\n");
 	printf("\t\t2.购物车\n");
 	printf("\t\t3.查找\n");
-	printf("\t\t4.会员功能\n");
-  printf("\t\t5.退出程序\n");
+  printf("\t\t4.退出程序\n");
 	printf("\t\t请选择对应数字1--4:\n");
 
 	while (1)
@@ -165,10 +164,7 @@ int menuGuest()
 	else if (select == 3)
 		realSelect = 6;
 
-  else if (select == 3)
-		realSelect = 7;
-
-	else if (select == 5)
+	else if (select == 4)
 		realSelect = 9;
 	
   
@@ -188,14 +184,15 @@ int menuCashier()
 	printf("\t\t2.结算\n");
 	printf("\t\t3.查找\n");
 	printf("\t\t4.员工考勤\n");
-  printf("\t\t5.退出程序\n");
-	printf("\t\t请选择对应数字1--5:\n");
+  printf("\t\t5.会员管理\n");
+  printf("\t\t6.退出程序\n");
+	printf("\t\t请选择对应数字1--6:\n");
 
 	while (1)
 	{
 		fflush(stdin); //清空输入缓存流
 		scanf("%d", &select);
-		if (select < 1 || select > 4)
+		if (select < 1 || select > 6)
 			printf("输入错误，请重新输入:");
 
 		else
@@ -215,6 +212,10 @@ int menuCashier()
 
 	else if (select == 5)
 		realSelect = 7;
+  
+  else if (select == 6)
+		realSelect = 9;
+
 	return realSelect;
 }
 
