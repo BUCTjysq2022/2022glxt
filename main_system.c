@@ -39,6 +39,7 @@ int menuCashier(); //***收银菜单函数
 int menuAdmin();   //***管理员菜单函数
 void vip();        //***会员管理函数
 void sign_in();    //***员工签到函数
+void shortage();    //***缺货提醒函数 
 
 
 
@@ -112,20 +113,25 @@ int main()
 			search();            //***查找功能函数
 			break;
     
-	  case 7:
+	    case 7:
 			system("cls");
 			vip();               //***会员管理函数
-      break;
+        break;
 			
-    case 8:
+        case 8:
 			system("cls");
 			sign_in();           //***员工签到函数
-      break;
+        break;
 
-    case 9:
+        case 9:
 			system("cls");
 			printf("感谢使用，再见!\n");
 			exit(0);
+	
+	    case 10:		
+			system("cls");
+			shortage();          //***缺货提醒函数 
+			break; 
 		}
 	}
 }
@@ -184,15 +190,16 @@ int menuCashier()
 	printf("\t\t2.结算\n");
 	printf("\t\t3.查找\n");
 	printf("\t\t4.员工考勤\n");
-  printf("\t\t5.会员管理\n");
-  printf("\t\t6.退出程序\n");
-	printf("\t\t请选择对应数字1--6:\n");
+    printf("\t\t5.会员管理\n");
+    printf("\t\t6.缺货提醒\n");
+    printf("\t\t7.退出程序\n");
+	printf("\t\t请选择对应数字1--7:\n");
 
 	while (1)
 	{
 		fflush(stdin); //清空输入缓存流
 		scanf("%d", &select);
-		if (select < 1 || select > 6)
+		if (select < 1 || select > 7)
 			printf("输入错误，请重新输入:");
 
 		else
@@ -207,15 +214,17 @@ int menuCashier()
 	else if (select == 3)
 		realSelect = 6;
   
-  else if (select == 4)
+   else if (select == 4)
 		realSelect = 8;
 
 	else if (select == 5)
 		realSelect = 7;
   
-  else if (select == 6)
-		realSelect = 9;
+   else if (select == 6)
+		realSelect = 10;
 
+    else if (select == 7)
+		realSelect = 9;
 	return realSelect;
 }
 
@@ -1059,6 +1068,16 @@ int fangkui_txt()
 } 
 
 
+struct viper
+{
+    char name[30];    //会员姓名
+    int id;           //会员卡号码
+    int phone;        //会员电话
+    int money;        //会员卡储值
+    int integal;      //会员积分 
+}vipers[1000];
+
+
 
 //***12计算购物车内的商品总价***//
 int calculate_all()
@@ -1076,6 +1095,9 @@ int calculate_all()
      	int expiry_date[3];//保质期
     };
     struct Goods goods[100]={0};
+    
+    
+    
      /***检测购物车文件是否存在***/
 	FILE *shoppfp,*pff;
 	if((shoppfp=fopen("shopping.txt","a+"))==NULL)
@@ -1101,6 +1123,9 @@ int calculate_all()
 		
 	}
     int sum=i;
+    
+    
+    
     /***根据保质期给用户折扣***/
     int now_day,now_month,now_year;
     time_t timep;
@@ -1111,6 +1136,7 @@ int calculate_all()
 	now_day=p->tm_mday;/*获取当前月份日数,范围是1-31*/
     now_month=1+p->tm_mon;/*获取当前月份,范围是0-11,所以要加1*/
     now_year=1900+p->tm_year;/*获取当前年份,从1900开始，所以要加1900*/
+	
 	
 	double day1,day2;
 	double date(int n, int m1, int d1, int m, int m2, int d2);
@@ -1132,15 +1158,144 @@ int calculate_all()
 			goods[i].totalPayment=0.95*goods[i].totalPayment;
 		}
 	}
+	
+	
+	
     double TotalPayment;
 	for(i=0;i<sum;i++)
 	{
+		if(goods[i].name=="牛奶")//***商品拆分 
+		{
+		printf("您的购物车中现有一箱12瓶的牛奶，是否购买其中的几瓶牛奶？\n");
+        printf("1.是\n");
+        printf("2.否\n");
+        int i=0,choice;
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+            
+			printf("请输入要购买的数量：");
+            double count,price=0;
+            scanf("%lf",&count);
+            double total=0;
+            double one_price=8;//***一瓶牛奶的价格 
+            total=count*one_price;
+            goods[i].totalPayment=total; 
+           
+            break;
+            }
+			case 2:
+			{
+			TotalPayment=TotalPayment;
+			break;	
+		}	
+		} 
+	    }
 		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
     }
-	printf("本店会根据保质日期给您相应折扣，根据此次购物，则总价为：%lf",TotalPayment);
-	void Profit(double TotalPayment);
-	Profit(TotalPayment);//***记录本次购物的交易额 
-    fclose(shoppfp);
+	fclose(shoppfp);
+	
+	
+	
+	//***捆绑销售 
+    for(i=0;i<sum;i++)
+	{
+		if(goods[i].name=="牙膏")
+		printf("是否购买牙刷？和牙膏一起购买能够更优惠哦！\n");
+        printf("1.是\n");
+        printf("2.否\n");
+        int i=0,choice;
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+            	
+            /***检测数据库文件是否存在***/
+            FILE *fp;
+            if ((fp = fopen("database.txt", "a+")) == NULL)
+            {
+                printf("找不到数据库文件");
+                exit(0);
+            }
+            int sum = 0;
+            /**数据库导入数组**/
+            int i = 0;
+            
+            
+            while (fscanf(fp, "%d", &item_array[i].id) != EOF)
+            {
+                fscanf(fp, "%s", &item_array[i].category);
+                fscanf(fp, "%s", &item_array[i].name);
+                fscanf(fp, "%d", &item_array[i].in_prize);
+                fscanf(fp, "%d", &item_array[i].out_prize);
+                fscanf(fp, "%d", &item_array[i].stock_quantity);
+                fscanf(fp, "%d", &item_array[i].purchase_quantity);
+                fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
+                fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
+                fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
+                i++;
+            }
+            
+            
+            sum=i;
+			printf("请输入要购买的数量：");
+            double count,price=0;
+            scanf("%lf",&count);
+            
+            for (i = 0; i < sum; i++)
+            {
+            	if(item_array[i].name=="牙刷")
+            	{
+            		item_array[i].stock_quantity=item_array[i].stock_quantity-count;
+            		price=item_array[i].out_prize;
+				}
+            }
+            
+            
+            for (i = 0; i < sum; i++)
+            {
+            	fprintf(fp, "\n%d ", item_array[i].id);
+                fprintf(fp, "%s ", item_array[i].category);
+                fprintf(fp, "%s ", item_array[i].name);
+                fprintf(fp, "%d ", item_array[i].in_prize);
+                fprintf(fp, "%d ", item_array[i].out_prize);
+                fprintf(fp, "%d ", item_array[i].stock_quantity);
+                fprintf(fp, "%d ", item_array[i].purchase_quantity);
+                fprintf(fp, "%d %d %d ", item_array[i].manufacture_date[0], item_array[i].manufacture_date[1], item_array[i].manufacture_date[2]);
+                fprintf(fp, "%d %d %d ", item_array[i].in_date[0], item_array[i].in_date[1], item_array[i].in_date[2]);
+                fprintf(fp, "%d %d %d\n", item_array[i].expiry_date[0], item_array[i].expiry_date[1], item_array[i].expiry_date[2]);
+			}
+            fclose(fp);
+            
+            
+            double total=0;
+            total=count*price;
+			TotalPayment=TotalPayment+total;
+            break;
+            }
+            
+            
+			case 2:
+			{
+			TotalPayment=TotalPayment;
+			break;	
+			} 
+	    }
+    }
+	
+	
+	double newPayment;
+	if(lijian==0)
+	{
+	    newPayment=TotalPayment; 
+		printf("本店会根据保质日期给您相应折扣，根据此次购物，则总价为：%lf",newPayment);
+	    
+	}
+	
+	
 	/***进行随机立减功能***/
 	/***随机数的取值***/
 	//***srand()用来设置rand()产生随机数时的随机数种子。参数seed必须是个整数，通常可以利用geypid()或time(0)的返回值来当做seed
@@ -1150,9 +1305,72 @@ int calculate_all()
      	double newPayment;
 	    newPayment=TotalPayment-(rand()%10)*0.01*TotalPayment;
 	    printf("\n并且由于是使用银行卡支付，本店有随机立减的优惠，则最后的总价为：%f\n",newPayment);
+	    
 	} 
+    
+   
+	 
+	//***记录本次购物的交易额 
+	void Profit(double TotalPayment);
+	Profit(newPayment);
+    
+    
+    //***会员结算功能 
+	printf("请输入会员卡号：");
+    int card;
+    scanf("%d",&card);
+    FILE *fps;
+    if ((fps = fopen("vip_new.txt", "a+")) == NULL)
+    {
+        printf("找不到数据库文件");
+        exit(0);
+    }   
+	 
+	 
+    struct viper vipers[1000];
+    while (fscanf(fps, "%d", &vipers[i].id) != EOF)  
+    {
+        fscanf(fps, "%s", &vipers[i].name);
+        fscanf(fps, "%d", &vipers[i].id);
+        fscanf(fps, "%d", &vipers[i].phone);
+        fscanf(fps, "%d", &vipers[i].money);
+        i++;
+    }
+    
+    
+    if(card == vipers[i].id) /***将会员卡中的钱进行结算***/   
+    {
+        printf("请输入要支付的金额：");
+        int momey_income;
+        scanf("%d",&momey_income);
+        vipers[i].integal=momey_income;/***记录会员卡中的积分***/ 
+        
 
-	
+        if(vipers[i].money>=momey_income)
+		{
+			vipers[i].money = vipers[i].money-momey_income;
+		}
+		else if(vipers[i].money<momey_income)
+		{
+			printf("很抱歉，余额不足，请充值！\n");
+		}
+		
+		
+        //***将新信息写进新文件
+		for(i=0;i<sum;i++)
+        {
+            fprintf(fps, "%s ", vipers[i].name);
+            fprintf(fps, "%d ", vipers[i].id);
+            fprintf(fps, "%d ", vipers[i].phone);
+            fprintf(fps, "%d\n", vipers[i].money);
+            fprintf(fps, "%d\n", vipers[i].integal);
+            i++;
+        }
+		fclose(fps);
+
+    }
+    
+    
 	printf("\n谢谢惠顾，欢迎下次购物！");
 	
 	/***清空购物车文件中的内容***/
@@ -1564,19 +1782,6 @@ struct worker
 
 
 
-
-struct viper
-{
-    char name[30];    //会员姓名
-    int id;           //会员卡号码
-    int phone;        //会员电话
-    int money;        //会员卡储值
-}vipers[1000];
-
-
-
-
-
 //***会员管理函数
 void vip()
 {
@@ -1641,7 +1846,7 @@ void vip()
         fscanf(fps, "%s", &vipers[i].name);
         fscanf(fps, "%d", &vipers[i].id);
         fscanf(fps, "%d", &vipers[i].phone);
-        fscanf(fps, "%d", &vipers[i].money);
+        fscanf(fps, "%d\n", &vipers[i].money);
         i++;
       }
 
@@ -1680,7 +1885,7 @@ void vip()
         fprintf(fps_new, "%s ", vipers[i].name);
         fprintf(fps_new, "%d ", vipers[i].id);
         fprintf(fps_new, "%d ", vipers[i].phone);
-        fprintf(fps_new, "%d ", vipers[i].money);
+        fprintf(fps_new, "%d\n", vipers[i].money);
       }
 
 
@@ -1813,5 +2018,63 @@ void sign_in()
 
   }
 
-}    
+}  
 
+
+
+
+//***缺货提醒函数
+void shortage()
+{
+	/***检测数据库文件是否存在***/
+    
+    
+	FILE *fp;
+    if ((fp = fopen("database.txt", "a+")) == NULL)
+    {
+        printf("找不到数据库文件");
+        exit(0);
+    }
+    
+    
+    struct item item_array[100];
+    i = 0;
+    while (fscanf(fp, "%d ", &item_array[i].id) != EOF)
+    {
+        fscanf(fp, "%d", &item_array[i].id);
+        fscanf(fp, "%s", &item_array[i].category);
+        fscanf(fp, "%s", &item_array[i].name);
+        fscanf(fp, "%d", &item_array[i].in_prize);
+        fscanf(fp, "%d", &item_array[i].out_prize);
+        fscanf(fp, "%d", &item_array[i].stock_quantity);
+        fscanf(fp, "%d", &item_array[i].purchase_quantity);
+        fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
+        fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
+        fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
+        i++;
+    }
+    fclose(fp);
+    
+	
+	sum=i;
+    int count=0;//计算缺货的商品个数 
+    for (i = 0; i < sum; i++)
+    {
+  	    if(item_array[i].stock_quantity<=10)//***此处可以修改缺货的阈值 
+		{
+			printf("%s库存低于10，请及时补货\n",item_array[i].name);
+			count++;
+	    }
+	    else if(item_array[i].stock_quantity>10)
+	    {
+	    	printf("%s库存为%d,货源充足\n",item_array[i].name,item_array[i].stock_quantity);
+		}
+		if(count==0)
+		{
+			printf("所有商品的库存充足!\n");
+			count=0; 
+		}
+    }sleep(5); 
+    
+    
+}  
