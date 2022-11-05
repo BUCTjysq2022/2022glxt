@@ -247,14 +247,19 @@ int menuAdmin()
 	printf("\t\t4.购物车\n");
 	printf("\t\t5.结算\n");
 	printf("\t\t6.查找\n");
-	printf("\t\t7.退出程序\n");
-	printf("\t\t请选择对应数字1--7:\n");
+	printf("\t\t7.会员功能\n");
+    printf("\t\t8.员工考勤\n");
+    printf("\t\t9.退出程序\n");
+    printf("\t\t10.缺货提醒\n");
+    printf("\t\t11.画图\n");
+	printf("\t\t请选择对应数字1--11:\n");
+
 
 	while (1)
 	{
 		fflush(stdin); //清空输入缓存流
 		scanf("%d", &select);
-		if (select < 1 || select > 12)
+		if (select < 1 || select > 11)
 			printf("输入错误，请重新输入:");
 		else
 			break;
@@ -1151,123 +1156,127 @@ int calculate_all()
     }
   }
 
-  double TotalPayment;
-  for (i = 0; i < sum; i++)
-  {
-    if (goods[i].name == "牛奶") //***商品拆分
+    double TotalPayment;
+    
+
+	for(i=0;i<sum;i++)
+	{
+		//***商品拆分 
+		if(strcmp(goods[i].name,"milk")==0)
     {
-      printf("您的购物车中现有一箱12瓶的牛奶，是否购买其中的几瓶牛奶？\n");
-      printf("1.是\n");
-      printf("2.否\n");
-      int i = 0, choice;
-      scanf("%d", &choice);
-      switch (choice)
-      {
-      case 1:
-      {
-
-        printf("请输入要购买的数量：");
-        double count, price = 0;
-        scanf("%lf", &count);
-        double total = 0;
-        double one_price = 8; //***一瓶牛奶的价格
-        total = count * one_price;
-        goods[i].totalPayment = total;
-
-        break;
-      }
-      case 2:
-      {
-        TotalPayment = TotalPayment;
-        break;
-      }
-      }
-    }
-    TotalPayment = TotalPayment + goods[i].totalPayment; //***计算购物车内商品总价
-  }
-  fclose(profitfp);
-
-  //***捆绑销售
-  for (i = 0; i < sum; i++)
-  {
-    if (goods[i].name == "牙膏")
-      printf("是否购买牙刷？和牙膏一起购买能够更优惠哦！\n");
-    printf("1.是\n");
-    printf("2.否\n");
-    int i = 0, choice;
-    scanf("%d", &choice);
-    switch (choice)
-    {
-    case 1:
-    {
-
-      /***检测数据库文件是否存在***/
-      FILE *fp;
-      if ((fp = fopen("database.txt", "a+")) == NULL)
-      {
-        printf("找不到数据库文件");
-        exit(0);
-      }
-      int sum = 0;
-      /**数据库导入数组**/
-      int i = 0;
-
-      while (fscanf(fp, "%d", &item_array[i].id) != EOF)
-      {
-        fscanf(fp, "%s", &item_array[i].category);
-        fscanf(fp, "%s", &item_array[i].name);
-        fscanf(fp, "%d", &item_array[i].in_prize);
-        fscanf(fp, "%d", &item_array[i].out_prize);
-        fscanf(fp, "%d", &item_array[i].stock_quantity);
-        fscanf(fp, "%d", &item_array[i].purchase_quantity);
-        fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
-        fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
-        fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
-        i++;
-      }
-
-      sum = i;
-      printf("请输入要购买的数量：");
-      double count, price = 0;
-      scanf("%lf", &count);
-
-      for (i = 0; i < sum; i++)
-      {
-        if (item_array[i].name == "牙刷")
+        printf("您的购物车中现有一箱12瓶的牛奶，是否购买其中的几瓶牛奶？\n");
+        printf("1.是\n");
+        printf("2.否\n");
+        int i=0,choice;
+        scanf("%d",&choice);
+        switch(choice)
         {
-          item_array[i].stock_quantity = item_array[i].stock_quantity - count;
-          price = item_array[i].out_prize;
-        }
-      }
-
-      for (i = 0; i < sum; i++)
-      {
-        fprintf(fp, "\n%d ", item_array[i].id);
-        fprintf(fp, "%s ", item_array[i].category);
-        fprintf(fp, "%s ", item_array[i].name);
-        fprintf(fp, "%d ", item_array[i].in_prize);
-        fprintf(fp, "%d ", item_array[i].out_prize);
-        fprintf(fp, "%d ", item_array[i].stock_quantity);
-        fprintf(fp, "%d ", item_array[i].purchase_quantity);
-        fprintf(fp, "%d %d %d ", item_array[i].manufacture_date[0], item_array[i].manufacture_date[1], item_array[i].manufacture_date[2]);
-        fprintf(fp, "%d %d %d ", item_array[i].in_date[0], item_array[i].in_date[1], item_array[i].in_date[2]);
-        fprintf(fp, "%d %d %d\n", item_array[i].expiry_date[0], item_array[i].expiry_date[1], item_array[i].expiry_date[2]);
-      }
-      fclose(fp);
-
-      double total = 0;
-      total = count * price;
-      TotalPayment = TotalPayment + total;
-      break;
+            case 1:
+            {
+            
+			printf("请输入要购买的数量：");
+            double price=0;
+            int count=0;
+            scanf("%d",&count);
+            double total=0;
+            double one_price=8.0;//***一瓶牛奶的价格 
+            total=count*one_price*1.0;
+            goods[i].totalPayment=total; 
+            printf("已购买%d瓶牛奶",count);
+            
+            }break;
+			
+            case 2:
+			{
+			TotalPayment=TotalPayment;
+			break;	
+		    }	
+		} 
+	    
+		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
+    }
     }
 
-    case 2:
+	fclose(profitfp);
+	
+	
+	
+	//***捆绑销售 
+    
+
+    for(i=0;i<sum;i++)
+{
+		
+        if(strcmp(goods[i].name,"toothpaste")==0)
     {
-      TotalPayment = TotalPayment;
-      break;
+		printf("是否购买牙刷？和牙膏一起购买能够更优惠哦！\n");
+        printf("1.是\n");
+        printf("2.否\n");
+        
+        int i=0,choice;
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+            	
+            /***检测数据库文件是否存在***/
+            FILE *fp;
+            if ((fp = fopen("database.txt", "a+")) == NULL)
+            {
+                printf("找不到数据库文件");
+                exit(0);
+            }
+            int sum = 0;
+            /**数据库导入数组**/
+            int i = 0;
+            
+            
+            while (fscanf(fp, "%d", &item_array[i].id) != EOF)
+            {
+                fscanf(fp, "%s", &item_array[i].category);
+                fscanf(fp, "%s", &item_array[i].name);
+                fscanf(fp, "%d", &item_array[i].in_prize);
+                fscanf(fp, "%d", &item_array[i].out_prize);
+                fscanf(fp, "%d", &item_array[i].stock_quantity);
+                fscanf(fp, "%d", &item_array[i].purchase_quantity);
+                fscanf(fp, "%d %d %d", &item_array[i].manufacture_date[0], &item_array[i].manufacture_date[1], &item_array[i].manufacture_date[2]);
+                fscanf(fp, "%d %d %d", &item_array[i].in_date[0], &item_array[i].in_date[1], &item_array[i].in_date[2]);
+                fscanf(fp, "%d %d %d", &item_array[i].expiry_date[0], &item_array[i].expiry_date[1], &item_array[i].expiry_date[2]);
+                i++;
+            }
+            
+            
+            sum=i;
+			printf("请输入要购买的数量：");
+            double count,price=0;
+            scanf("%lf",&count);
+            
+            for (i = 0; i < sum; i++)
+            {
+            	if(strcmp(goods[i].name,"toothbrush")==0)
+            	{
+            		item_array[i].stock_quantity=item_array[i].stock_quantity-count;
+            		price=item_array[i].out_prize;
+				}
+            }
+            
+            
+            double total;
+            total=count*1.0*price;
+			TotalPayment=25;
+            break;
+            }
+            
+            
+			case 2:
+			{
+			TotalPayment=TotalPayment;
+			break;	
+			} 
+	    }
     }
-    }
-  }
+}
 
   double newPayment;
   if (lijian == 0)
@@ -1306,7 +1315,7 @@ int calculate_all()
 
   profit(newPayment, tmp_ptr->tm_year, (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday,\
   tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec,\
-  goods[i].name,goods[i].price,goods[i].discount,goods[i].number,\
+  goods[i].name[20],goods[i].price,goods[i].discount,goods[i].number,\
   goods[i].expiry_date[0],goods[i].expiry_date[1],goods[i].expiry_date[2],\
   goods[i].manufacture_date[0],goods[i].manufacture_date[1],goods[i].manufacture_date[2],\
   goods[i].in_date[0],goods[i].in_date[1],goods[i].in_date[2]);
