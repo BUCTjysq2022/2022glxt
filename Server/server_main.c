@@ -40,7 +40,7 @@ int menuAdmin();   //***管理员菜单函数
 void vip();        //***会员管理函数
 void sign_in();    //***员工签到函数
 void shortage();    //***缺货提醒函数 
-
+void plot();
 
 
 //***全局变量定义***//
