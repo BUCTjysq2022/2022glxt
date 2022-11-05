@@ -148,14 +148,15 @@ int menuGuest()
 	printf("\t\t1.显示所有商品\n");
 	printf("\t\t2.购物车\n");
 	printf("\t\t3.查找\n");
-  printf("\t\t4.退出程序\n");
+    printf("\t\t4.计算功能\n");
+    printf("\t\t5.退出程序\n");
 	printf("\t\t请选择对应数字1--4:\n");
 
 	while (1)
 	{
 		fflush(stdin); //清空输入缓存流
 		scanf("%d", &select);
-		if (select < 1 || select > 4)
+		if (select < 1 || select > 5)
 			printf("输入错误，请重新输入:");
 
 		else
@@ -170,7 +171,10 @@ int menuGuest()
 	else if (select == 3)
 		realSelect = 6;
 
-	else if (select == 4)
+    else if (select == 4)
+		realSelect = 5;
+
+	else if (select == 5)
 		realSelect = 9;
 	
   
@@ -242,14 +246,16 @@ int menuAdmin()
 	printf("\t\t4.购物车\n");
 	printf("\t\t5.结算\n");
 	printf("\t\t6.查找\n");
-	printf("\t\t7.退出程序\n");
-	printf("\t\t请选择对应数字1--7:\n");
+	printf("\t\t7.会员功能\n");
+    printf("\t\t8.员工考勤\n");
+    printf("\t\t9.退出程序\n");
+	printf("\t\t请选择对应数字1--9:\n");
 
 	while (1)
 	{
 		fflush(stdin); //清空输入缓存流
 		scanf("%d", &select);
-		if (select < 1 || select > 7)
+		if (select < 1 || select > 9)
 			printf("输入错误，请重新输入:");
 		else
 			break;
@@ -840,12 +846,12 @@ void chanshop()
               printf("\n\t添加商品至购物车成功！\n");
               
               
-              fprintf(shopfp, "%d ", goods[i].code);
-              fprintf(shopfp, "%s ", goods[i].name);
-              fprintf(shopfp, "%f ", goods[i].price);
-              fprintf(shopfp, "%f ", goods[i].discount);
-              fprintf(shopfp, "%d ", goods[i].number);
-              fprintf(shopfp, "%f \n", goods[i].totalPayment);
+              fprintf(shopfp, "%d ", goods[j].code);
+              fprintf(shopfp, "%s ", goods[j].name);
+              fprintf(shopfp, "%f ", goods[j].price);
+              fprintf(shopfp, "%f ", goods[j].discount);
+              fprintf(shopfp, "%d ", goods[j].number);
+              fprintf(shopfp, "%f \n", goods[j].totalPayment);
 
               /*输入成功提示*/
               printf("\t文件写入完成!\n");
@@ -1079,7 +1085,7 @@ struct viper
 
 
 
-//***12计算购物车内的商品总价***//
+//***12***计算购物车内的商品总价***//
 int calculate_all()
 {
 	struct Goods//***购物车结构体定义***//
@@ -1162,11 +1168,14 @@ int calculate_all()
 	
 	
     double TotalPayment;
+    
+
 	for(i=0;i<sum;i++)
 	{
-		if(goods[i].name=="牛奶")//***商品拆分 
-		{
-		printf("您的购物车中现有一箱12瓶的牛奶，是否购买其中的几瓶牛奶？\n");
+		//***商品拆分 
+		if(strcmp(goods[i].name,"milk")==0)
+    {
+        printf("您的购物车中现有一箱12瓶的牛奶，是否购买其中的几瓶牛奶？\n");
         printf("1.是\n");
         printf("2.否\n");
         int i=0,choice;
@@ -1177,35 +1186,44 @@ int calculate_all()
             {
             
 			printf("请输入要购买的数量：");
-            double count,price=0;
-            scanf("%lf",&count);
+            double price=0;
+            int count=0;
+            scanf("%d",&count);
             double total=0;
-            double one_price=8;//***一瓶牛奶的价格 
-            total=count*one_price;
+            double one_price=8.0;//***一瓶牛奶的价格 
+            total=count*one_price*1.0;
             goods[i].totalPayment=total; 
-           
-            break;
-            }
-			case 2:
+            printf("已购买%d瓶牛奶",count);
+            
+            }break;
+			
+            case 2:
 			{
 			TotalPayment=TotalPayment;
 			break;	
-		}	
+		    }	
 		} 
-	    }
+	    
 		TotalPayment=TotalPayment+goods[i].totalPayment;//***计算购物车内商品总价 
     }
+    }
+
 	fclose(shoppfp);
 	
 	
 	
 	//***捆绑销售 
+    
+
     for(i=0;i<sum;i++)
-	{
-		if(goods[i].name=="牙膏")
+{
+		
+        if(strcmp(goods[i].name,"toothpaste")==0)
+    {
 		printf("是否购买牙刷？和牙膏一起购买能够更优惠哦！\n");
         printf("1.是\n");
         printf("2.否\n");
+        
         int i=0,choice;
         scanf("%d",&choice);
         switch(choice)
@@ -1247,7 +1265,7 @@ int calculate_all()
             
             for (i = 0; i < sum; i++)
             {
-            	if(item_array[i].name=="牙刷")
+            	if(strcmp(goods[i].name,"toothbrush")==0)
             	{
             		item_array[i].stock_quantity=item_array[i].stock_quantity-count;
             		price=item_array[i].out_prize;
@@ -1255,25 +1273,9 @@ int calculate_all()
             }
             
             
-            for (i = 0; i < sum; i++)
-            {
-            	fprintf(fp, "\n%d ", item_array[i].id);
-                fprintf(fp, "%s ", item_array[i].category);
-                fprintf(fp, "%s ", item_array[i].name);
-                fprintf(fp, "%d ", item_array[i].in_prize);
-                fprintf(fp, "%d ", item_array[i].out_prize);
-                fprintf(fp, "%d ", item_array[i].stock_quantity);
-                fprintf(fp, "%d ", item_array[i].purchase_quantity);
-                fprintf(fp, "%d %d %d ", item_array[i].manufacture_date[0], item_array[i].manufacture_date[1], item_array[i].manufacture_date[2]);
-                fprintf(fp, "%d %d %d ", item_array[i].in_date[0], item_array[i].in_date[1], item_array[i].in_date[2]);
-                fprintf(fp, "%d %d %d\n", item_array[i].expiry_date[0], item_array[i].expiry_date[1], item_array[i].expiry_date[2]);
-			}
-            fclose(fp);
-            
-            
-            double total=0;
-            total=count*price;
-			TotalPayment=TotalPayment+total;
+            double total;
+            total=count*1.0*price;
+			TotalPayment=25;
             break;
             }
             
@@ -1285,6 +1287,8 @@ int calculate_all()
 			} 
 	    }
     }
+}
+
 	
 	
 	double newPayment;
